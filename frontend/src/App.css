@@ -1,0 +1,29 @@
+main {
+    width: 100%;
+    min-height: 100vh;
+    /* background: url("../img/hero-bg.jpg") top center;
+    background-size: cover; */
+    position: relative;
+    padding: 90px 0;
+    z-index: 3;
+}
+
+
+:root {
+    --color-dark-blue-95: rgba(32, 28, 76, 0.95);
+    --color-light-blue: #3795BD;
+    --color-purple: #5a417c;
+    --color-primary: #56b8e6;
+    --color-secondary: #1b2f45;
+}
+
+/* :root {
+    --dark-blue: 
+    --primary-color: #694F8E;
+    --secondary-color: #2ecc71;
+    --accent-color: #e74c3c;
+    --background-color: #ecf0f1;
+    --text-color: #2c3e50;
+    --heading-color: #34495e;
+  }
+   */

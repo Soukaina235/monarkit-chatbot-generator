@@ -1,0 +1,35 @@
+.logo {
+  line-height: 1;
+}
+  
+.logo span {
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--color-light-blue);
+    font-family: "Nunito", sans-serif;
+}
+
+.card {
+  border: var(--color-light-blue) solid 1px !important;
+}
+
+.card-title {
+  color: var(--color-light-blue);
+}
+
+.register-button {
+  background-color: #5a417c;
+  border: #5a417c;
+}
+
+.register-button:hover {
+  background-color: #694F8E;
+  border: #694F8E;
+}
+
+.register-button:active, .register-button:focus {
+  background-color: #694F8E !important;
+  border: #694F8E !important;
+  box-shadow: none;
+  color: white;
+}

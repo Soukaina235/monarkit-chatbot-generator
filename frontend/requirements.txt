@@ -1,0 +1,6 @@
+react-router-dom
+jwt-decode
+axios
+bootstrap
+favicons
+bootstrap-icons
