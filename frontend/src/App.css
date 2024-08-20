@@ -17,6 +17,13 @@ main {
     --color-secondary: #1b2f45;
 }
 
+.loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 3px;
+}
+
 /* :root {
     --dark-blue: 
     --primary-color: #694F8E;

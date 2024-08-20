@@ -99,8 +99,11 @@ const Header = () => {
             <nav id="navbar" className={`navbar ${isMobileNavActive ? 'mobile-nav-active' : ''}`}>
               <ul>
                 <li><Link to="/">Home</Link></li>
-                {user ? ( 
-                  <li onClick={logoutUser}><a href='#'>Logout</a></li>
+                {user ? (
+                  <> 
+                    <li onClick={logoutUser}><a href='#'>Logout</a></li>
+                    <li><Link to="/profile">Profile</Link></li>
+                  </>
                 ) : (
                 <>
                   <li><Link to="/login">Login</Link></li>
@@ -108,7 +111,6 @@ const Header = () => {
                 </>
                 )}
                 <li><a href="team.html">Team</a></li>
-                <li><a href="blog.html">Blog</a></li>
 
                 {/* Main Dropdown */}
                 <li className="dropdown">
