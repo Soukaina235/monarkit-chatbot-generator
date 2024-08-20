@@ -44,7 +44,7 @@ const LoginPage = () => {
                       className="alert alert-danger" 
                       role="alert"
                     >
-                      Your login credentials are incorrect. Please try again.
+                      Login credentials are incorrect. Please try again.
                     </div>
                   }
                 </div>
@@ -63,17 +63,17 @@ const LoginPage = () => {
 
                       <div className="pt-4 pb-2">
                         <h5 className="card-title text-center pb-0 fs-4">Login to Your Account</h5>
-                        <p className="text-center small">Enter your username & password to login</p>
+                        <p className="text-center small">Enter your email & password to login</p>
                       </div>
 
                       <form className="row g-3 needs-validation" onSubmit={handleSubmit} noValidate>
 
                         <div className="col-12">
-                          <label htmlFor="username" className="form-label">Username</label>
+                          <label htmlFor="email" className="form-label">Email</label>
                           <div className="input-group has-validation">
                             <span className="input-group-text" id="inputGroupPrepend">@</span>
-                            <input type="text" name="username" className="form-control" id="username" required/>
-                            <div className="invalid-feedback">Please enter your username.</div>
+                            <input type="text" name="email" className="form-control" id="email" required/>
+                            <div className="invalid-feedback">Please enter your email.</div>
                           </div>
                         </div>
 

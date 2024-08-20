@@ -6,10 +6,14 @@ import { Link } from 'react-router-dom';
 
 
 const Register = () => {
-  const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [dateOfBirth, setDateOfBirth] = useState('');
+  const [companyName, setCompanyName] = useState('');
+  const [activity, setActivity] = useState('');
+  const [phone, setPhone] = useState('');
+  const [country, setCountry] = useState('');
+  const [address, setAddress] = useState('');
+  const [about, setAbout] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
 
@@ -40,18 +44,26 @@ const Register = () => {
     e.preventDefault();
     try {
       const response = await axios.post('http://localhost:8000/api/register/', {
-        username,
         email,
         password,
-        date_of_birth: dateOfBirth
+        company_name: companyName,
+        activity,
+        country,
+        address,
+        phone,
+        about
       });
 
       if (response.status === 201) {
         setSuccess('Registration successful! You can login to your account now.');
-        setUsername('');
         setEmail('');
         setPassword(''); 
-        setDateOfBirth('');
+        setCompanyName('');
+        setActivity('');
+        setCountry('');
+        setAddress('');
+        setPhone('');
+        setAbout('');
         setError('');
       }
     } catch (err) {
@@ -109,35 +121,70 @@ const Register = () => {
 
                       <div className="pt-4 pb-2">
                         <h5 className="card-title text-center pb-0 fs-4">Create an Account</h5>
-                        <p className="text-center small">Enter your details to create an account</p>
+                        <p className="text-center small">Enter your company's details to create an account</p>
                       </div>
 
                       <form className="row g-3 needs-validation" noValidate onSubmit={handleSubmit}>
                         <div className="col-12">
-                          <label htmlFor="name" className="form-label">Name</label>
-                          <input type="text" name="name" className="form-control" id="name" required />
-                          <div className="invalid-feedback">Please, enter your name!</div>
+                          <label htmlFor="companyName" className="form-label">Company name</label>
+                          <input type="text" name="companyName" className="form-control" id="companyName" required 
+                            value={companyName}
+                            onChange={(e) => setCompanyName(e.target.value)}
+                          />
+                          <div className="invalid-feedback">Please, enter your company name!</div>
                         </div>
 
                         <div className="col-12">
                           <label htmlFor="email" className="form-label">Email</label>
-                          <input type="email" name="email" className="form-control" id="email" required
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                          />
-                          <div className="invalid-feedback">Please enter a valid Email address!</div>
+                          <div className="input-group has-validation">
+                            <span className="input-group-text" id="inputGroupPrepend">@</span>
+                            <input type="email" name="email" className="form-control" id="email" required
+                              value={email}
+                              onChange={(e) => setEmail(e.target.value)}
+                            />
+                            <div className="invalid-feedback">Please  enter a valid Email address!</div>
+                          </div>
                         </div>
 
                         <div className="col-12">
-                          <label htmlFor="username" className="form-label">Username</label>
-                          <div className="input-group has-validation">
-                            <span className="input-group-text" id="inputGroupPrepend">@</span>
-                            <input type="text" name="username" className="form-control" id="username" required
-                              value={username}
-                              onChange={(e) => setUsername(e.target.value)}
-                            />
-                            <div className="invalid-feedback">Please choose a username.</div>
-                          </div>
+                          <label htmlFor="phone" className="form-label">Activity</label>
+                          <input type="text" name="phone" className="form-control" id="activity" required
+                            value={activity}
+                            onChange={(e) => setActivity(e.target.value)}
+                          />
+                        </div>
+
+                        <div className="col-12">
+                          <label htmlFor="phone" className="form-label">Country</label>
+                          <input type="text" name="phone" className="form-control" id="country" required
+                            value={country}
+                            onChange={(e) => setCountry(e.target.value)}
+                          />
+                        </div>
+
+                        <div className="col-12">
+                          <label htmlFor="phone" className="form-label">Address</label>
+                          <input type="text" name="phone" className="form-control" id="address" required
+                            value={address}
+                            onChange={(e) => setAddress(e.target.value)}
+                          />
+                        </div>
+
+                        <div className="col-12">
+                          <label htmlFor="phone" className="form-label">Phone number</label>
+                          <input type="text" name="phone" className="form-control" id="phone" required
+                            value={phone}
+                            onChange={(e) => setPhone(e.target.value)}
+                          />
+                          <div className="invalid-feedback">Please enter your company's phone number!</div>
+                        </div>
+
+                        <div className="col-12">
+                          <label htmlFor="about" className="form-label">About</label>
+                          <textarea name="about" className="form-control" id="about" required
+                            value={about}
+                            onChange={(e) => setAbout(e.target.value)}
+                          ></textarea>
                         </div>
 
                         <div className="col-12">
@@ -146,16 +193,9 @@ const Register = () => {
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                           />
-                          <div className="invalid-feedback">Please enter your password!</div>
+                          <div className="invalid-feedback">Please enter a password!</div>
                         </div>
 
-                        <div className="col-12">
-                          <label htmlFor="dateOfBirth" className="form-label">Date of Birth</label>
-                          <input type="date" name="dateOfBirth" className="form-control" id="dateOfBirth" required
-                            value={dateOfBirth}
-                            onChange={(e) => setDateOfBirth(e.target.value)}
-                          />
-                        </div>
 
                         <div className="col-12">
                           <div className="form-check">

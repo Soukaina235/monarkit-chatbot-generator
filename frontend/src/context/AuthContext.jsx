@@ -38,7 +38,7 @@ export const AuthProvider = ({ children }) => {
                 },
                 body: JSON.stringify( // e.target is the form
                     {   
-                        'username': e.target.username.value, 
+                        'email': e.target.email.value, 
                         'password': e.target.password.value
                     }
                 )
@@ -67,7 +67,7 @@ export const AuthProvider = ({ children }) => {
         setAuthTokens(null)
         setUser(null)
         localStorage.removeItem('authTokens')
-        navigate('/login')
+        navigate('/')
     } 
     
 
@@ -90,7 +90,7 @@ export const AuthProvider = ({ children }) => {
             setUser(jwtDecode(tokens.access))
             localStorage.setItem('authTokens', JSON.stringify(tokens))
         } else {
-            logoutUser()
+            // logoutUser()
         }
 
         if (loading) {

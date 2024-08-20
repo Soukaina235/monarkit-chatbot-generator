@@ -1,7 +1,7 @@
 import './App.css'
-import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom'
+import { BrowserRouter as Router} from 'react-router-dom'
 import { AuthProvider } from './context/AuthContext'
-import Routing from './utils/routing'
+import Routing from './utils/Routing'
 
 function App() {
 
