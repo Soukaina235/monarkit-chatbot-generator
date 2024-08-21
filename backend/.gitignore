@@ -1,4 +1,4 @@
 env
 backend/base/migrations/*
 db.sqlite3
-backend/media/*
+media/*
