@@ -74,6 +74,9 @@ const ProfilePage = () => {
         setError(null);
     }
 
+    // Base URL of the backend
+    const baseUrl = 'http://127.0.0.1:8000';
+
     if (!profile) return (
         <main className='loading'>
             <div className="spinner-border" role="status">
@@ -113,7 +116,11 @@ const ProfilePage = () => {
 
                         <div className="card">
                             <div className="card-body profile-card pt-4 d-flex flex-column align-items-center">
-                                <img src="../../../public/default-company-2.png" alt="Profile" className="rounded-circle profile-image" />
+                                <img 
+                                    src={profile.profile_image ? `${baseUrl}${profile.profile_image}` : "../../../public/default-company-2.png"}
+                                    alt="Profile" 
+                                    className="rounded-circle profile-image" 
+                                />
                                 <h2>{profile.company_name}</h2>
                                 <h3>
                                     {profile.activity? profile.activity :
@@ -143,7 +150,7 @@ const ProfilePage = () => {
 
                                 <div className="tab-content pt-2">
                                     <ProfileOverview profile={profile} />
-                                    <ProfileEdit profile={profile} onSuccess={handleSuccess} onError={handleError} />
+                                    <ProfileEdit profile={profile} setProfile={setProfile} onSuccess={handleSuccess} onError={handleError} />
                                     <ChangePassword onSuccess={handleSuccess} onError={handleError} />
                                 </div>
 

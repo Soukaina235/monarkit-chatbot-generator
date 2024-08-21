@@ -126,7 +126,7 @@ const Register = () => {
 
                       <form className="row g-3 needs-validation" noValidate onSubmit={handleSubmit}>
                         <div className="col-12">
-                          <label htmlFor="companyName" className="form-label">Company name</label>
+                          <label htmlFor="companyName" className="form-label">Company name *</label>
                           <input type="text" name="companyName" className="form-control" id="companyName" required 
                             value={companyName}
                             onChange={(e) => setCompanyName(e.target.value)}
@@ -135,7 +135,7 @@ const Register = () => {
                         </div>
 
                         <div className="col-12">
-                          <label htmlFor="email" className="form-label">Email</label>
+                          <label htmlFor="email" className="form-label">Email *</label>
                           <div className="input-group has-validation">
                             <span className="input-group-text" id="inputGroupPrepend">@</span>
                             <input type="email" name="email" className="form-control" id="email" required
@@ -147,31 +147,31 @@ const Register = () => {
                         </div>
 
                         <div className="col-12">
-                          <label htmlFor="phone" className="form-label">Activity</label>
-                          <input type="text" name="phone" className="form-control" id="activity" required
+                          <label htmlFor="activity" className="form-label">Activity *</label>
+                          <input type="text" name="activity" className="form-control" id="activity" required
                             value={activity}
                             onChange={(e) => setActivity(e.target.value)}
                           />
                         </div>
 
                         <div className="col-12">
-                          <label htmlFor="phone" className="form-label">Country</label>
-                          <input type="text" name="phone" className="form-control" id="country" required
+                          <label htmlFor="country" className="form-label">Country</label>
+                          <input type="text" name="country" className="form-control" id="country" required
                             value={country}
                             onChange={(e) => setCountry(e.target.value)}
                           />
                         </div>
 
                         <div className="col-12">
-                          <label htmlFor="phone" className="form-label">Address</label>
-                          <input type="text" name="phone" className="form-control" id="address" required
+                          <label htmlFor="address" className="form-label">Address</label>
+                          <input type="text" name="address" className="form-control" id="address" required
                             value={address}
                             onChange={(e) => setAddress(e.target.value)}
                           />
                         </div>
 
                         <div className="col-12">
-                          <label htmlFor="phone" className="form-label">Phone number</label>
+                          <label htmlFor="phone" className="form-label">Phone number *</label>
                           <input type="text" name="phone" className="form-control" id="phone" required
                             value={phone}
                             onChange={(e) => setPhone(e.target.value)}
@@ -188,8 +188,8 @@ const Register = () => {
                         </div>
 
                         <div className="col-12">
-                          <label htmlFor="yourPassword" className="form-label">Password</label>
-                          <input type="password" name="password" className="form-control" id="yourPassword" required
+                          <label htmlFor="password" className="form-label">Password *</label>
+                          <input type="password" name="password" className="form-control" id="password" required
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                           />

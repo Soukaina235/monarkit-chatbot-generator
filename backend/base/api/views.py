@@ -72,6 +72,7 @@ def get_company_profile(request):
     return Response(serializer.data)
 
 @api_view(['PUT'])
+@permission_classes([IsAuthenticated])
 def update_profile(request):
     try:
         user = request.user
