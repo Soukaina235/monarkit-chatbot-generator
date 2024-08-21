@@ -1,6 +1,8 @@
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.db import models
 from django.utils import timezone
+import os
+from django.utils import timezone
 
 class CustomUserManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_fields):
@@ -18,6 +20,17 @@ class CustomUserManager(BaseUserManager):
 
         return self.create_user(email, password, **extra_fields)
 
+
+
+def profile_image_directory_path(instance, filename):
+    # Extract file extension
+    ext = filename.split('.')[-1]
+    # Generate filename based on current date and time
+    newFilename = f"{timezone.now().strftime('%Y%m%d%H%M%S')}.{ext}"
+    # Return the complete file path
+    return f"profile_images/{instance.id}/{newFilename}"
+
+
 class CustomUser(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True)
     company_name = models.CharField(max_length=100)
@@ -26,6 +39,8 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     country = models.CharField(max_length=150, blank=True, null=True)
     address = models.CharField(max_length=255, blank=True, null=True)
     phone = models.CharField(max_length=20)
+    profile_image = models.ImageField(upload_to=profile_image_directory_path, blank=True, null=True)
+
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     date_joined = models.DateTimeField(default=timezone.now)

@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './ProfileEdit.css';
 
-const ProfileEditForm = ({ profile, onSuccess, onError }) => {
+const ProfileEdit = ({ profile, setProfile, onSuccess, onError }) => {
     const [formData, setFormData] = useState({
         email: profile.email,
         company_name: profile.company_name,
@@ -10,7 +10,9 @@ const ProfileEditForm = ({ profile, onSuccess, onError }) => {
         country: profile.country,
         address: profile.address,
         phone: profile.phone,
+        profile_image: profile.profile_image, 
     });
+    const [profileImageChanged, setProfileImageChanged] = useState(false);
 
     useEffect(() => {
         setFormData({
@@ -21,31 +23,87 @@ const ProfileEditForm = ({ profile, onSuccess, onError }) => {
             country: profile.country,
             address: profile.address,
             phone: profile.phone,
+            profile_image: profile.profile_image,  
         });
     }, [profile]);
 
+    const getImageToDisplay = () => {
+        if (profileImageChanged) {
+            console.log('profile_image from url.createObjectUrl: ', formData.profile_image);
+            return URL.createObjectURL(formData.profile_image);
+        } else if (formData.profile_image && !profileImageChanged) {
+            // Base URL of the backend
+            const baseUrl = 'http://127.0.0.1:8000';
+            return `${baseUrl}${formData.profile_image}`;
+        } else {
+            return "../../../public/default-company-2.png";
+        }
+    }
+
+    const fileInputRef = useRef(null);
+
     const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData((prev) => ({ ...prev, [name]: value }));
+        const { name, value, files } = e.target;
+        setFormData((prev) => ({ 
+            ...prev, 
+            [name]: files ? files[0] : value,
+        }));
+    };
+
+    const handleFileChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            setFormData((prev) => ({ 
+                ...prev, 
+                profile_image: file,
+            }));
+            setProfileImageChanged(true);
+        }
+    };
+
+    const handleRemoveImage = () => {
+        // Logic to remove image
+        setFormData((prev) => ({ 
+            ...prev, 
+            profile_image: null,
+        }));
+    };
+
+    const handleUploadClick = () => {
+        fileInputRef.current.click();
     };
 
     const handleSubmit = async (e) => {
         const accessToken = JSON.parse(localStorage.getItem('authTokens')).access
 
         e.preventDefault();
+
+        console.log('From handleSubmit formData.profile_image :', formData.profile_image);
+        const formDataObj = new FormData();
+        for (let key in formData) {
+            if (formData[key]) {
+                if (key === 'profile_image' && !profileImageChanged) {
+                    continue;
+                }    
+                formDataObj.append(key, formData[key]);
+            }
+        }
+
         try {
+            // When sending FormData, you should not manually set the Content-Type header because the browser will set it automatically to multipart/form-data and include the appropriate boundary. 
             const response = await fetch('http://127.0.0.1:8000/api/profile/update/', {
                 method: 'PUT',
                 headers: {
-                    'Content-Type': 'application/json',
                     'Authorization': `Bearer ${accessToken}`
                 },
-                body: JSON.stringify(formData),
+                body: formDataObj,
             });
             const data = await response.json();
             if (response.ok) {
                 console.log('Profile updated successfully:', data);
                 onSuccess('Profile updated successfully!');
+                setProfile(data);
+                setProfileImageChanged(false);
             } else {
                 console.error('Error updating profile:', data);
                 onError(data.error || 'An error occurred');
@@ -62,10 +120,37 @@ const ProfileEditForm = ({ profile, onSuccess, onError }) => {
                 <div className="row mb-3">
                 <label htmlFor="profile_image" className="col-md-4 col-lg-3 col-form-label">Profile Image</label>
                 <div className="col-md-8 col-lg-9">
-                    <img id="profile_image" className="profile-image" src="../../../public/default-company-2.png" alt="Profile" />
+                    <img 
+                        id="profile_image" 
+                        className="profile-image" 
+                        src={getImageToDisplay()}
+                        alt="Profile" 
+                    />
                     <div className="pt-2">
-                    <a href="#" className="btn btn-primary btn-sm" title="Upload new profile image"><i className="bi bi-upload"></i></a>
-                    <a href="#" className="btn btn-danger btn-sm" title="Remove my profile image"><i className="bi bi-trash"></i></a>
+                        <input 
+                            type="file" 
+                            id="profile_image" 
+                            ref={fileInputRef} 
+                            style={{ display: 'none' }} 
+                            accept="image/*" 
+                            onChange={handleFileChange} 
+                        />
+                        <a 
+                            href="#" 
+                            className="btn btn-primary btn-sm" 
+                            title="Upload new profile image"
+                            onClick={handleUploadClick}
+                        >
+                            <i className="bi bi-upload"></i>
+                        </a>
+                        <a 
+                            href="#" 
+                            className="btn btn-danger btn-sm" 
+                            title="Remove profile image"
+                            onClick={handleRemoveImage}
+                        >
+                            <i className="bi bi-trash"></i>
+                        </a>
                     </div>
                 </div>
                 </div>
@@ -173,4 +258,4 @@ const ProfileEditForm = ({ profile, onSuccess, onError }) => {
     )
 }
 
-export default ProfileEditForm;
+export default ProfileEdit;

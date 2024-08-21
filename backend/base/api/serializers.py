@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
+from django.conf import settings
 
 User = get_user_model()
 
@@ -23,5 +24,11 @@ class CustomUserRegistrationSerializer(serializers.ModelSerializer):
 class CompanyProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('email', 'company_name', 'activity', 'about', 'country', 'address', 'phone')
+        fields = ('email', 'company_name', 'activity', 'about', 'country', 'address', 'phone', 'profile_image')
+
+    def get_profile_image(self, obj):
+        if obj.profile_image:
+            # Build full URL to the media file
+            return settings.MEDIA_URL + str(obj.profile_image)
+        return None
 

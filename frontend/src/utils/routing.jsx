@@ -8,6 +8,8 @@ import PageNotFound from '../errors/PageNotFound/PageNotFound'
 import Footer from '../components/Footer/Footer'
 import ProfilePage from '../pages/ProfilePage/ProfilePage'
 import PrivateRoute from './PrivateRoute'
+import ChatPage from '../pages/ChatPage/ChatPage'
+import NewChatbotPage from '../pages/NewChatbotPage/NewChatbotPage'
 
 function Routing() {
   const [notFound, setNotFound] = useState(false);
@@ -15,7 +17,7 @@ function Routing() {
 
   // !!! update this whenever a new Route is added !!!
   useEffect(() => {
-    setNotFound(['/register', '/login', '/profile', '/'].every((path) => path !== location.pathname));
+    setNotFound(['/register', '/login', '/', '/profile', '/chat', '/new-chatbot'].every((path) => path !== location.pathname));
   }, [location.pathname]);
 
   return (
@@ -26,6 +28,8 @@ function Routing() {
         <Route path="/profile" element={<PrivateRoute><ProfilePage /></PrivateRoute>} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/login" element={<LoginPage />} />
+        <Route path='/chat' element={<ChatPage />}/>
+        <Route path='/new-chatbot' element={<NewChatbotPage />}/>
         <Route path="*" element={<PageNotFound />} />
       </Routes>
       {!notFound && <Footer />}
