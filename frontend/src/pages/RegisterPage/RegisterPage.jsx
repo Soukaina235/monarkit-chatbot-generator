@@ -14,6 +14,7 @@ const Register = () => {
   const [country, setCountry] = useState('');
   const [address, setAddress] = useState('');
   const [about, setAbout] = useState('');
+  
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
 
