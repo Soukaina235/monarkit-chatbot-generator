@@ -46,8 +46,9 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt.token_blacklist',
     "corsheaders",
 
-    'base.apps.BaseConfig',
-    'users.apps.UsersConfig',
+    'backend.base.apps.BaseConfig',
+    'backend.users.apps.UsersConfig',
+    'backend.chatbots.apps.ChatbotsConfig',
 ]
 
 # telling django to use simple jwt for authentication

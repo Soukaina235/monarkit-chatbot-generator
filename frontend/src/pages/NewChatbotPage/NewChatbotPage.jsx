@@ -1,28 +1,72 @@
+import React, { useEffect, useRef, useState } from 'react';
+import axios from 'axios';
 import './NewChatbotPage.css';
+import { jwtDecode } from 'jwt-decode';
 
 const NewChatbotPage = () => {
 
-    const handleSubmit = (e) => {};
+    const [error, setError] = useState('');
+    const [success, setSuccess] = useState('');
+  
+    const successRef = useRef(null);
+    const errorRef = useRef(null);
+    
+    const [formData, setFormData] = useState({
+        name: '',
+        website_url: '',
+        avatar: null,
+        description: '',
+    });
 
-    // async function checkURLExists(url) {
-    //     try {
-    //         const response = await fetch(url, { method: 'HEAD' });  // Using 'HEAD' to only get headers without body
-    //         return response.ok; // Returns true if status is 200-299
-    //     } catch (error) {
-    //         console.error('Error fetching URL:', error);
-    //         return false; // Returns false if there's an error (e.g., network issues)
-    //     }
-    // }
-    
-    // // Example usage:
-    // checkURLExists('https://example.com').then(exists => {
-    //     if (exists) {
-    //         console.log('URL exists!');
-    //     } else {
-    //         console.log('URL does not exist!');
-    //     }
-    // });
-    
+    const handleChange = (e) => {
+        const { name, value, files } = e.target;
+        setFormData((prev) => ({ 
+            ...prev, 
+            [name]: files ? files[0] : value,
+        }));
+    };
+
+    const handleSubmit = async (e) => {
+        const accessToken = JSON.parse(localStorage.getItem('authTokens')).access
+
+        e.preventDefault();
+
+        console.log("from handle submit form data", formData);
+
+        const formDataObj = new FormData();
+        for (let key in formData) {
+            if (formData[key]) {
+                formDataObj.append(key, formData[key]);
+            }
+        }
+
+        const userId = jwtDecode(accessToken).user_id;
+        formDataObj.append('user_id', userId);
+        console.log("from handle submit user if", userId);
+        
+        console.log("from handle submit form data obj", formDataObj);
+
+        try {
+            const response = await fetch('http://127.0.0.1:8000/api/chatbot/create/', {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${accessToken}`
+                },
+                body: formDataObj,
+            });
+            const data = await response.json();
+            if (response.ok) {
+                console.log('Chatbot initialized successfully:', data);
+                setSuccess('Chatbot initialized successfully!');
+            } else {
+                console.error('Error initializing chatbot:', data);
+                setError(data.error || 'An error occurred');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            setError('An unexpected error occurred. Please try again later.');
+        }
+    };
     
     return(
         <main>
@@ -33,7 +77,7 @@ const NewChatbotPage = () => {
                 
                 <div className="row justify-content-center">
 
-                {/* <div className="alerts col-lg-8 col-md-6">
+                <div className="alerts col-lg-8 col-md-6">
                     {success && 
                     <div 
                         ref={successRef} 
@@ -53,7 +97,7 @@ const NewChatbotPage = () => {
                     {error}
                     </div>
                     }
-                </div> */}
+                </div>
 
                     <div className="col-lg-8 col-md-6 d-flex flex-column align-items-center justify-content-center">
 
@@ -74,40 +118,45 @@ const NewChatbotPage = () => {
 
                         <form className="row g-3 needs-validation" noValidate onSubmit={handleSubmit}>
                             <div className="col-12">
-                            <label htmlFor="chatbot_name" className="form-label">Chatbot Name *</label>
-                            <input type="text" name="chatbot_name" className="form-control" id="chatbot_name" required 
-                                // value={chatbotName}
-                                // onChange={(e) => setChatbotName(e.target.value)}
-                            />
-                            <div className="invalid-feedback">Please, enter your chatbot name!</div>
-                            </div>
-{/* 
-                            <div className="col-12">
-                            <label htmlFor="email" className="form-label">Email *</label>
-                            <div className="input-group has-validation">
-                                <span className="input-group-text" id="inputGroupPrepend">@</span>
-                                <input type="email" name="email" className="form-control" id="email" required
-                                // value={email}
-                                // onChange={(e) => setEmail(e.target.value)}
+                                <label htmlFor="name" className="form-label">Chatbot Name *</label>
+                                <input type="text" name="name" className="form-control" id="name" required 
+                                    // value={formData.name}
+                                    onChange={handleChange}
                                 />
-                                <div className="invalid-feedback">Please  enter a valid Email address!</div>
+                                <div className="invalid-feedback">Please, enter your chatbot name!</div>
                             </div>
-                            </div> */}
 
                             <div className="col-12">
-                            <label htmlFor="website_url" className="form-label">Website URL *</label>
-                            <input type="text" name="website_url" className="form-control" id="website_url" required
-                                // value={websiteUrl}
-                                // onChange={(e) => setWebsiteUrl(e.target.value)}
-                            />
+                                <label htmlFor="website_url" className="form-label">Website URL *</label>
+                                <input type="text" name="website_url" className="form-control" id="website_url" required
+                                    // value={formData.website_url}
+                                    onChange={handleChange}
+                                />
+                                <div className="invalid-feedback">Please, enter your website URL!</div>
+                            </div>
+
+                            <div className="col-12">
+                                <label htmlFor="avatar" className="form-label">Chatbot Avatar</label>
+                                <input className="form-control" type="file" id="avatar" name="avatar" 
+                                    // value={formData.avatar}
+                                    accept='image/*'
+                                    onChange={handleChange}
+                                />
+                            </div>
+
+                            <div className="col-12">
+                                <label htmlFor="website_url" className="form-label">Description</label>
+                                <textarea 
+                                    name="description" 
+                                    className="form-control" 
+                                    id="description"
+                                    // value={formData.description}
+                                    onChange={handleChange}
+                                >
+                                </textarea>
+                            </div>
+
                             
-                            <div className="invalid-feedback">Please, enter your website URL!</div>
-                            </div>
-
-                            <div className="col-12">
-                            <label htmlFor="website_url" className="form-label">Chatbot Avatar</label>
-                                <input class="form-control" type="file" id="formFile" />
-                            </div>
 
                             <div className="col-12">
                                 <button className="submit-button btn btn-primary w-100" type="submit">Initialize Chatbot</button>
