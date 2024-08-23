@@ -84,20 +84,22 @@ text_chunks = split_text(processed_content)
 
 # Get GPT-4 responses for each chunk
 gpt4_responses = process_with_gpt4(text_chunks)
-print(gpt4_responses)
+# print(gpt4_responses)
+# print(gpt4_responses[0]['question'])    
+# print(gpt4_responses[0]['answer'])
 
-print()
-print("******************************************************************************")
-print()
+# print()
+# print("******************************************************************************")
+# print()
 
-# Format the responses as JSONL
-system_message = "You are an assistant that answers questions based on the provided content."
-jsonl_output = format_as_jsonl(gpt4_responses, system_message)
+# # Format the responses as JSONL
+# system_message = "You are an assistant that answers questions based on the provided content."
+# jsonl_output = format_as_jsonl(gpt4_responses, system_message)
 
-# Save the result to a JSONL file
-save_to_jsonl_file('output2.jsonl', jsonl_output)
+# # Save the result to a JSONL file
+# save_to_jsonl_file('output3.jsonl', jsonl_output)
+# print(jsonl_output)
 
-print(jsonl_output)
 
 # # Save the formatted data to a JSONL file
 # save_to_jsonl(formatted_data, 'questions_and_responses_formatted.jsonl')

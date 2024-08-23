@@ -1,0 +1,61 @@
+main {
+    width: 80%;
+    margin: auto;
+    margin-top: 40px;
+}
+
+.chatbot-training .chatbot-card img {
+max-width: 120px;
+}
+
+.chatbot-training .chatbot-card h2, .chatbot-training .right-card h3 {
+font-size: 24px;
+font-weight: 700;
+color: #2c384e;
+margin: 10px 0 0 0;
+}
+
+.chatbot-training .chatbot-card h3 {
+font-size: 18px;
+}
+
+.chatbot-training .chatbot-card .social-links a {
+font-size: 20px;
+display: inline-block;
+color: rgba(1, 41, 112, 0.5);
+line-height: 0;
+margin-right: 10px;
+transition: 0.3s;
+}
+
+.chatbot-training .chatbot-card .social-links a:hover {
+color: #012970;
+}
+
+.chatbot-training .chatbot-overview .row {
+margin-bottom: 20px;
+font-size: 15px;
+}
+
+.chatbot-training .chatbot-overview .card-title {
+color: #012970;
+}
+
+.chatbot-training .chatbot-overview .label {
+font-weight: 600;
+color: rgba(1, 41, 112, 0.6);
+}
+
+.chatbot-training .chatbot-edit label {
+font-weight: 600;
+color: rgba(1, 41, 112, 0.6);
+}
+
+.chatbot-training .chatbot-edit img {
+max-width: 120px;
+}
+
+.chatbot-image {
+    border: #d2dce4 3px solid;
+    border-radius: 50%;
+}

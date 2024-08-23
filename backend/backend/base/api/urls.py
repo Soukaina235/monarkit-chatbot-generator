@@ -21,6 +21,6 @@ urlpatterns = [
     path('profile/', get_company_profile, name='get_company_profile'),
     path('profile/update/', update_profile, name='update_profile'),
 
-    # path("chatbots/", include('backend.chatbots.urls'))
+    path("chatbots/", include('backend.chatbots.urls')), # include the chatbots app urls
     path('chatbot/create/', create_chatbot, name='create_chatbot'),
 ]

@@ -2,30 +2,28 @@ from openai import OpenAI
 from dotenv import load_dotenv
 import os
 import json
-from extract_website_content import extract_website_content
-from process_data_with_langchain import process_content_with_langchain
-from passing_data_to_gpt import split_text, process_with_gpt4
+from django.conf import settings
+from datetime import datetime
 
-# Load environment variables from .env file
 load_dotenv()
-
-# Access the environment variable
 openai_api_key = os.getenv('OPENAI_API_KEY')
-
 client = OpenAI(api_key=openai_api_key)
 
-def augment_data_with_gpt4(input_jsonl, output_jsonl):
+def get_augmented_data(data, system_message):
+
+    # print(input_jsonl)
 
     # with open(input_jsonl, 'r') as file:
     #     data = file.readlines()
 
+
     augmented_data = []
 
-    for i in range(len(input_jsonl)):
-        question = input_jsonl[i]['question']
-        answer = input_jsonl[i]['answer']
-        # item = json.loads(line)
-        # question = item["messages"][1]["content"]
+    # for line in data:
+    #     item = json.loads(line)
+    for i in range(len(data)):
+        question = data[i]['question']
+        answer = data[i]['answer']
         # response = item["messages"][2]["content"]
 
         # Create a prompt for GPT-4
@@ -37,7 +35,6 @@ def augment_data_with_gpt4(input_jsonl, output_jsonl):
 
         # Call GPT-4 to generate reformulated questions
         response = client.chat.completions.create(
-            
             model="gpt-4",
             messages=[
                 {"role": "system", "content": "You are an assistant that generates reformulated questions based on the provided content."},
@@ -46,16 +43,9 @@ def augment_data_with_gpt4(input_jsonl, output_jsonl):
         )
 
         # # Parse the response
-        # generated_questions = response.choices[0].message.content
-
         parsed_response = json.loads(response.choices[0].message.content)
-
-        system_message = "You are AionChat, a virtual assistant dedicated to the MonarkIT agency. The user can ask questions about products, customer support, or any other information related to our company. For topics outside of our domain, you will inform the user that you focus solely on MonarkIT."
         
         for question_answer_pair in parsed_response:
-            # print("Generated question: ", question_answer_pair)
-            # print("Answer: ", question_answer_pair["answer"])
-            # print("Question: ", question_answer_pair["question"])
             question = question_answer_pair["question"]
             answer = question_answer_pair["answer"]
 
@@ -72,27 +62,26 @@ def augment_data_with_gpt4(input_jsonl, output_jsonl):
     
     return '\n'.join(augmented_data)
 
-    # # Save the augmented data to a JSONL file
-    # with open(output_jsonl, 'w') as file:
-    #     for item in augmented_data:
-
-    #         file.write(json.dumps(item) + '\n')
-
-def save_to_jsonl_file(filename, jsonl_content):
-    with open(filename, 'w') as file:
+def save_to_jsonl_file(jsonl_content, file_path):
+    with open(file_path, 'w') as file:
         file.write(jsonl_content)
 
+def get_file_path(user_id):
+    timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+    directory = os.path.join(settings.MEDIA_ROOT, 'datasets', str(user_id))
+    if not os.path.exists(directory):
+        os.makedirs(directory)
+    
+    # Define the file path
+    filename = f"{timestamp}.jsonl"
+    file_path = os.path.join(directory, filename)
+    return {'file_path': file_path, 'filename': filename}
 
-# Example usage:
-# input_jsonl = 'output3.jsonl'
-output_jsonl = 'augmented_output4.jsonl'
-
-url = "https://monarkit.net/"
-website_content = extract_website_content(url)
-processed_content = process_content_with_langchain(website_content)
-text_chunks = split_text(processed_content)
-
-# Get GPT-4 responses for each chunk
-gpt4_responses = process_with_gpt4(text_chunks)
-augmented_data = augment_data_with_gpt4(gpt4_responses, output_jsonl)
-save_to_jsonl_file(output_jsonl, augmented_data)
+def augment_data(dataset, system_message, user_id):
+    augmented_data = get_augmented_data(dataset, system_message)
+    file_path = get_file_path(user_id)
+    file_info = get_file_path(user_id)
+    full_path = file_info['file_path']
+    save_to_jsonl_file(augmented_data, full_path)
+    file_name = file_info['filename']
+    return file_name
