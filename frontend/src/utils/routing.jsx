@@ -10,6 +10,8 @@ import ProfilePage from '../pages/ProfilePage/ProfilePage'
 import PrivateRoute from './PrivateRoute'
 import ChatPage from '../pages/ChatPage/ChatPage'
 import NewChatbotPage from '../pages/NewChatbotPage/NewChatbotPage'
+import ChatbotListPage from '../pages/ChatbotListPage/ChatbotListPage'
+import TrainingProcessPage from '../pages/TrainingProcessPage/TrainingProcessPage'
 
 function Routing() {
   const [notFound, setNotFound] = useState(false);
@@ -17,9 +19,21 @@ function Routing() {
 
   // !!! update this whenever a new Route is added !!!
   useEffect(() => {
-    setNotFound(['/register', '/login', '/', '/profile', '/chat', '/new-chatbot'].every((path) => path !== location.pathname));
-  }, [location.pathname]);
+    const validPaths = [
+      '/register',
+      '/login',
+      '/',
+      '/profile',
+      '/chat',
+      '/new-chatbot',
+      '/chatbots'
+    ];
 
+    // Check if the current path is exactly one of the valid paths or starts with '/training/'
+    const isValidPath = validPaths.includes(location.pathname) || location.pathname.startsWith('/training/');
+
+    setNotFound(!isValidPath);
+  }, [location.pathname]);
   return (
     <>
       {!notFound && <Header />}
@@ -30,6 +44,8 @@ function Routing() {
         <Route path="/login" element={<LoginPage />} />
         <Route path='/chat' element={<ChatPage />}/>
         <Route path='/new-chatbot' element={<NewChatbotPage />}/>
+        <Route path='/chatbots' element={<ChatbotListPage />}/>
+        <Route path="/training/:id" element={<TrainingProcessPage />} />
         <Route path="*" element={<PageNotFound />} />
       </Routes>
       {!notFound && <Footer />}

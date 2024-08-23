@@ -193,3 +193,17 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ALLOW_ALL_ORIGINS = True
+
+
+# Broker settings
+CELERY_BROKER_URL = 'redis://localhost:6379/0'
+
+# Backend settings
+CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
+
+# Optional: Set the timezone for Celery
+CELERY_TIMEZONE = 'UTC'
+
+# Optional: Specify task serialization format
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'

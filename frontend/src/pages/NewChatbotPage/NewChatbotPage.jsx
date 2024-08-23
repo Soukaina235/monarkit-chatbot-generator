@@ -16,6 +16,7 @@ const NewChatbotPage = () => {
         website_url: '',
         avatar: null,
         description: '',
+        status: 'initialized',
     });
 
     const handleChange = (e) => {

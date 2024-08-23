@@ -13,11 +13,48 @@ def chatbot_avatar_directory_path(instance, filename):
     return os.path.join(f'chatbot_avatars/{user_id}', filename)
 
 class Chatbot(models.Model):
+
+    # Status choices
+    STATUS_CHOICES = [
+        ('initialized', 'Initialized'),
+        ('trained', 'Trained'),
+        ('failed', 'Failed'),
+        ('cancelled', 'Cancelled'),
+        ('training', 'Training'),
+        ('trained', 'Trained'),
+    ]
+
+    TRAINING_STEPS = [
+        ('scraping', 'Scraping Website'),
+        ('processing', 'Processing Content'),
+        ('extraction', 'Extracting Questions and Responses'),
+        ('augmentation', 'Augmenting Data'),
+        ('validation', 'Validating Training File'),
+        ('upload', 'Upload Training File'),
+        ('training', 'Training Model'),
+        ('completed', 'Completed'),
+    ]
+
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='chatbots')
     name = models.CharField(max_length=255, blank=False, null=False)
     description = models.TextField(blank=True, null=True)
     avatar = models.ImageField(upload_to=chatbot_avatar_directory_path, blank=True, null=True)
     website_url = models.URLField(blank=False, null=False)
+    status = models.CharField(
+        max_length=20,
+        choices=STATUS_CHOICES,
+        default='initialized'
+    )
+    training_step = models.CharField(
+        max_length=50, 
+        choices=TRAINING_STEPS, 
+        blank=True,
+        null=True
+    )
+    dataset_file_path = models.CharField(max_length=255, blank=True, null=True)
+    dataset_file_id = models.CharField(max_length=255, blank=True, null=True)
+    openai_job_id = models.CharField(max_length=255, blank=True, null=True)
+    openai_model_id = models.CharField(max_length=255, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
