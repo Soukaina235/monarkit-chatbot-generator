@@ -1,4 +1,5 @@
 import './HomePage.css'
+import { Link } from 'react-router-dom'
 
 const HomePage = () => {
   return (
@@ -12,8 +13,7 @@ const HomePage = () => {
                 <p>Embrace virtual assistant technologies to enhance user experience and eliminate repetitive tasks, letting your team focus on what truly matters.</p>
               </blockquote>
               <div className="d-flex" data-aos="fade-up" data-aos-delay="200">
-                <a href="#about" className="btn-get-started">Get Started</a>
-                <a href="https://www.youtube.com/watch?v=LXb3EKWsInQ" className="glightbox btn-watch-video d-flex align-items-center"><i className="bi bi-play-circle"></i><span>Watch Video</span></a>
+                <Link to="/login" className="btn-get-started">Get Started</Link>
               </div>
 
             </div>

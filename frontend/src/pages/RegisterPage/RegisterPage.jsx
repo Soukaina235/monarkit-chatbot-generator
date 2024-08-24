@@ -1,8 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 import './RegisterPage.css';
-import logo from '../../../public/logo.png';
+// import logo from '../../../public/logo.png';
 import { Link } from 'react-router-dom';
+import config from '../../config/config.development';
 
 
 const Register = () => {
@@ -44,7 +45,7 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:8000/api/register/', {
+      const response = await axios.post(`${config.backendUrl}/api/register/`, {
         email,
         password,
         company_name: companyName,

@@ -16,10 +16,6 @@ export default function({ profile }) {
                     }
                 </div>
             </div>
-            {/* <div className="row">
-                <div className="col-lg-3 col-md-4 label">Company</div>
-                <div className="col-lg-9 col-md-8">Lueilwitz, Wisoky and Leuschke</div>
-            </div> */}
             <div className="row">
                 <div className="col-lg-3 col-md-4 label">Activity</div>
                 <div className="col-lg-9 col-md-8">

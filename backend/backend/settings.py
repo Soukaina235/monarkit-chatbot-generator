@@ -195,6 +195,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CORS_ALLOW_ALL_ORIGINS = True
 
 
+# -------------------------------- Celery settings --------------------------------
 # Broker settings
 CELERY_BROKER_URL = 'redis://localhost:6379/0'
 

@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import AuthContext from '../../context/AuthContext';
+import config from '../../config/config.development';
 
 const ChangePassword = ({ onSuccess, onError }) => {
     
@@ -31,7 +32,7 @@ const ChangePassword = ({ onSuccess, onError }) => {
         }
 
         try {
-            const response = await fetch('http://127.0.0.1:8000/api/change-password/', {
+            const response = await fetch(`${config.backendUrl}/api/change-password/`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
