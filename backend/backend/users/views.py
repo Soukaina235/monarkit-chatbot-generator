@@ -9,7 +9,6 @@ from django.contrib.auth.password_validation import validate_password
 from django.contrib.auth import update_session_auth_hash
 from rest_framework.exceptions import ValidationError
 
-from backend.chatbots.serializers import ChatbotSerializer
 
 @api_view(['POST'])
 def register(request):
@@ -21,12 +20,14 @@ def register(request):
     print("Errors:", serializer.errors)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def get_company_profile(request):
     user = request.user  # The currently authenticated user
     serializer = CompanyProfileSerializer(user)
     return Response(serializer.data)
+
 
 @api_view(['PUT'])
 @permission_classes([IsAuthenticated])

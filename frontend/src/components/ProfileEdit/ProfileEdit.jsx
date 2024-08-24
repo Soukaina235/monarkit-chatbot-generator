@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './ProfileEdit.css';
+import config from '../../config/config.development';
 
 const ProfileEdit = ({ profile, setProfile, onSuccess, onError }) => {
     const [formData, setFormData] = useState({
@@ -33,10 +34,10 @@ const ProfileEdit = ({ profile, setProfile, onSuccess, onError }) => {
             return URL.createObjectURL(formData.profile_image);
         } else if (formData.profile_image && !profileImageChanged) {
             // Base URL of the backend
-            const baseUrl = 'http://127.0.0.1:8000';
-            return `${baseUrl}${formData.profile_image}`;
+            // const baseUrl = 'http://127.0.0.1:8000';
+            return `${config.backendUrl}${formData.profile_image}`;
         } else {
-            return "../../../public/default-company-2.png";
+            return "default-company-avatar.png";
         }
     }
 
@@ -91,7 +92,7 @@ const ProfileEdit = ({ profile, setProfile, onSuccess, onError }) => {
 
         try {
             // When sending FormData, you should not manually set the Content-Type header because the browser will set it automatically to multipart/form-data and include the appropriate boundary. 
-            const response = await fetch('http://127.0.0.1:8000/api/profile/update/', {
+            const response = await fetch(`${config.backendUrl}/api/profile/update/`, {
                 method: 'PUT',
                 headers: {
                     'Authorization': `Bearer ${accessToken}`

@@ -4,7 +4,7 @@ from .models import CustomUser
 
 class UserAdmin(BaseUserAdmin):
     model = CustomUser
-    # Specify the fields you want to display in the admin interface
+    # Fields to display in the admin interface
     list_display = ('email', 'company_name', 'activity', 'country', 'address', 'phone', 'is_staff', 'is_active')
 
     # Define which fields are editable in the admin

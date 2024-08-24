@@ -1,8 +1,8 @@
-import { Link } from "react-router-dom";
-import ChatbotTableLine from "../../components/ChatbotTableLine/ChatbotTableLine";
 import "./ChatbotListPage.css";
+import { Link } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
-
+import ChatbotTableLine from "../../components/ChatbotTableLine/ChatbotTableLine";
+import config from "../../config/config.development";
 
 const ListChatbotPage = () => {
     const [chatbotData, setChatbotData] = useState(null);
@@ -18,7 +18,7 @@ const ListChatbotPage = () => {
     useEffect(() => {
         const accessToken = JSON.parse(localStorage.getItem('authTokens')).access
 
-        fetch('http://127.0.0.1:8000/api/chatbots/', {
+        fetch(`${config.backendUrl}/api/chatbots/`, {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${accessToken}`,

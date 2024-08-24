@@ -1,7 +1,7 @@
-import React, { useEffect, useRef, useState } from 'react';
-import axios from 'axios';
 import './NewChatbotPage.css';
+import React, { useEffect, useRef, useState } from 'react';
 import { jwtDecode } from 'jwt-decode';
+import config from '../../config/config.development';
 
 const NewChatbotPage = () => {
 
@@ -48,7 +48,7 @@ const NewChatbotPage = () => {
         console.log("from handle submit form data obj", formDataObj);
 
         try {
-            const response = await fetch('http://127.0.0.1:8000/api/chatbots/create/', {
+            const response = await fetch(`${config.backendUrl}/api/chatbots/create/`, {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${accessToken}`

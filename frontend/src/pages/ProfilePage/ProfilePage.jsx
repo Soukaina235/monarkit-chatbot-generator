@@ -4,6 +4,7 @@ import ChangePassword from '../../components/ChangePassword/ChangePassword'
 import ProfileEdit from '../../components/ProfileEdit/ProfileEdit'
 import ProfileOverview from '../../components/ProfileOverview/ProfileOverview'
 import './ProfilePage.css'
+import config from '../../config/config.development';
 
 const ProfilePage = () => {
     const [profile, setProfile] = useState(null);
@@ -48,7 +49,7 @@ const ProfilePage = () => {
     useEffect(() => {
         const accessToken = JSON.parse(localStorage.getItem('authTokens')).access
 
-        fetch('http://127.0.0.1:8000/api/profile/', {
+        fetch(`${config.backendUrl}/api/profile/`, {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${accessToken}`,
@@ -74,8 +75,8 @@ const ProfilePage = () => {
         setError(null);
     }
 
-    // Base URL of the backend
-    const baseUrl = 'http://127.0.0.1:8000';
+    // // Base URL of the backend
+    // const baseUrl = 'http://127.0.0.1:8000';
 
     if (!profile) return (
         <main className='loading'>
@@ -117,7 +118,7 @@ const ProfilePage = () => {
                         <div className="card">
                             <div className="card-body profile-card pt-4 d-flex flex-column align-items-center">
                                 <img 
-                                    src={profile.profile_image ? `${baseUrl}${profile.profile_image}` : "../../../public/default-company-2.png"}
+                                    src={profile.profile_image ? `${config.backendUrl}${profile.profile_image}` : "default-company-avatar.png"}
                                     alt="Profile" 
                                     className="rounded-circle profile-image" 
                                 />
