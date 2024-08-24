@@ -8,16 +8,25 @@ from .serializers import ChatbotSerializer
 from django.http import JsonResponse
 from .training_tasks import start_training_pipeline
 
-# @api_view(['POST'])
-# @permission_classes([IsAuthenticated])
-# def create_chatbot(request):
-#     serializer = ChatbotSerializer(data=request.data)
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def create_chatbot(request):
+    serializer = ChatbotSerializer(data=request.data)
+
+    print("Request data:", request.data)
+    print("Serializer data:", serializer)
     
-#     if serializer.is_valid():
-#         serializer.save(owner=request.user)
-#         return Response(serializer.data, status=status.HTTP_201_CREATED)
-    
-#     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    if serializer.is_valid():
+        # Access the authenticated user
+        user = request.user
+        print("Authenticated user:", user)
+        
+        # Save the serializer data and set the owner to the authenticated user
+        serializer.save(owner=user)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    else:
+        print("Errors:", serializer.errors)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
@@ -42,35 +51,8 @@ def get_chatbot_by_id(request, id):
     serializer = ChatbotSerializer(chatbot)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
-
-
 @api_view(['POST'])
 def start_training(request, id):
     user_id = request.user.id
     start_training_pipeline.delay(id, user_id)
     return JsonResponse({'status': 'Training started'})
-
-
-# @api_view(['POST'])
-# def start_scraping(request):
-#     url = request.data.get('url')
-#     chatbot_id = request.data.get('chatbot_id')  # Assume the chatbot ID is sent in the request
-
-#     # Fetch the chatbot instance
-#     try:
-#         chatbot = Chatbot.objects.get(id=chatbot_id)
-#     except Chatbot.DoesNotExist:
-#         return JsonResponse({'status': 'error', 'message': 'Chatbot not found'}, status=404)
-    
-#     # Update the training step
-#     chatbot.training_step = 'scraping'
-#     chatbot.save()
-
-#     # Perform web scraping
-#     content = extract_website_content(url)
-
-#     # Optionally, update the chatbot with the scraped content
-#     # chatbot.content = content
-#     # chatbot.save()
-
-#     return JsonResponse({'status': 'success', 'content': content, 'training_step': chatbot.training_step})

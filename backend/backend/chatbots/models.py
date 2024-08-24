@@ -40,17 +40,8 @@ class Chatbot(models.Model):
     description = models.TextField(blank=True, null=True)
     avatar = models.ImageField(upload_to=chatbot_avatar_directory_path, blank=True, null=True)
     website_url = models.URLField(blank=False, null=False)
-    status = models.CharField(
-        max_length=20,
-        choices=STATUS_CHOICES,
-        default='initialized'
-    )
-    training_step = models.CharField(
-        max_length=50, 
-        choices=TRAINING_STEPS, 
-        blank=True,
-        null=True
-    )
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='initialized')
+    training_step = models.CharField(max_length=50, choices=TRAINING_STEPS, blank=True, null=True)
     dataset_file_path = models.CharField(max_length=255, blank=True, null=True)
     dataset_file_id = models.CharField(max_length=255, blank=True, null=True)
     openai_job_id = models.CharField(max_length=255, blank=True, null=True)
