@@ -13,3 +13,4 @@ class ChatbotSerializer(serializers.ModelSerializer):
             # Build full URL to the media file
             return settings.MEDIA_URL + str(obj.avatar)
         return None
+    

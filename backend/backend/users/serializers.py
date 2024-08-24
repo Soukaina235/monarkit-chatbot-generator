@@ -32,4 +32,3 @@ class CompanyProfileSerializer(serializers.ModelSerializer):
             # Build full URL to the media file
             return settings.MEDIA_URL + str(obj.profile_image)
         return None
-

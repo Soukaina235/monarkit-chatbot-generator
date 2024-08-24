@@ -48,7 +48,7 @@ const NewChatbotPage = () => {
         console.log("from handle submit form data obj", formDataObj);
 
         try {
-            const response = await fetch('http://127.0.0.1:8000/api/chatbot/create/', {
+            const response = await fetch('http://127.0.0.1:8000/api/chatbots/create/', {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${accessToken}`

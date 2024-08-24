@@ -1,3 +1,4 @@
 .vscode
 *.env
 start-project.txt
+dump.rdb
