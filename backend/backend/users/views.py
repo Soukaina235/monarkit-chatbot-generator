@@ -46,7 +46,7 @@ def update_profile(request):
 
 
 @api_view(['PUT'])
-@permission_classes([IsAuthenticated])
+# @permission_classes([IsAuthenticated])
 def change_password(request):
     user = request.user
     old_password = request.data.get('old_password')

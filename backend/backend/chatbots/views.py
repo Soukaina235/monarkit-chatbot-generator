@@ -7,6 +7,11 @@ from .models import Chatbot
 from .serializers import ChatbotSerializer
 from django.http import JsonResponse
 from .training_tasks import start_training_pipeline
+from django.views.decorators.csrf import csrf_exempt
+from openai import OpenAI
+import json
+from dotenv import load_dotenv
+import os
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
@@ -56,3 +61,49 @@ def start_training(request, id):
     user_id = request.user.id
     start_training_pipeline.delay(id, user_id)
     return JsonResponse({'status': 'Training started'})
+
+
+
+@csrf_exempt
+@permission_classes([IsAuthenticated])
+def send_message(request):
+    openai_api_key = os.getenv('OPENAI_API_KEY')
+    client = OpenAI(api_key=openai_api_key)
+
+    if request.method == 'POST':
+        data = json.loads(request.body)
+
+        # # Extract data from request
+        # chatbot_id = data.get('chatbot_id')
+        # user_id = data.get('user_id')
+
+        # user_id = request.user.id
+
+        user_message = data.get('user_input')
+        chatbot_id = int(data.get('chatbot_id'))
+
+        print("User message:", user_message)
+        print("Chatbot ID:", chatbot_id)
+        print("data:", data)
+
+        try:
+            chatbot = Chatbot.objects.get(id=chatbot_id) # , owner=request.user
+        except Chatbot.DoesNotExist:
+            return Response({'error': 'Chatbot not found'}, status=status.HTTP_404_NOT_FOUND)
+
+        # Generate a response using the OpenAI API
+        response = client.chat.completions.create(
+            model=chatbot.openai_model_id,
+            messages=[
+                {"role": "system", "content": "You are a helpful assistant."},
+                {"role": "user", "content": user_message},
+            ]
+        )
+
+        # Extract response content
+        # bot_message = response['choices'][0]['message']['content']
+        bot_message = response.choices[0].message.content
+
+        # Save the conversation to the database if needed
+
+        return JsonResponse({'message': bot_message})
