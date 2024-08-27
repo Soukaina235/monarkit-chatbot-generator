@@ -4,10 +4,11 @@ import { useEffect, useRef, useState } from "react";
 import ChatbotTableLine from "../../components/ChatbotTableLine/ChatbotTableLine";
 import config from "../../config/config.development";
 import ChatbotDetails from "../../components/ChatbotDetails/ChatbotDetails";
+import ChatbotDelete from "../../components/ChatbotDelete/ChatbotDelete";
 
 const ListChatbotPage = () => {
-    const [chatbotData, setChatbotData] = useState(null);
-    const [chatbots, setChatbots] = useState(null);
+    const [chatbotData, setChatbotData] = useState([]);
+    const [chatbots, setChatbots] = useState([]);
     const [loading, setLoading] = useState(true);
 
     const [success, setSuccess] = useState(null);
@@ -66,6 +67,23 @@ const ListChatbotPage = () => {
         setSelectedChatbot(null);
         console.log('Selected chatbot:', selectedChatbot);
     // setModalType(null);
+    };
+
+    const handleDeleteSuccess = (deletedChatbotId) => {
+        console.log('Deleted chatbot ID:', deletedChatbotId);
+        setChatbotData(chatbotData.filter(chatbot => chatbot.id !== deletedChatbotId));
+        setChatbots(
+            chatbotData.map((chatbot) => {
+                return (
+                    <ChatbotTableLine
+                        key={chatbot.id}
+                        chatbot={chatbot}
+                        onOpenModal={handleOpenModal}
+                    />
+                );
+            })
+        );
+        console.log('Chatbots:', chatbots);
     };
 
     if (!chatbotData) return (
@@ -150,7 +168,7 @@ const ListChatbotPage = () => {
                     </div>
                 </div>
 
-                <div className="row g-0 align-items-center pb-4">
+                {/* <div className="row g-0 align-items-center pb-4">
                     <div className="col-sm-6">
                         <div><p className="mb-sm-0">Showing 1 to 10 of 57 entries</p></div>
                     </div>
@@ -171,71 +189,13 @@ const ListChatbotPage = () => {
                             </ul>
                         </div>
                     </div>
-                </div>
+                </div> */}
             </div>
-            
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            {/* <div className="card recent-sales overflow-auto">
-                <div className="card-body">
-                    <h5 className="card-title">Your Chatbots</h5>
-
-                    <div className="datatable-wrapper datatable-loading no-footer sortable searchable fixed-columns"><div className="datatable-top">
-                    </div>
-                    <div className="datatable-container">
-                        <table className="table">
-                            <thead>
-                                <tr>
-                                    <th scope="col" data-sortable="true">
-                                        <button className="datatable-sorter">Avatar</button>
-                                    </th>
-                                    <th scope="col" data-sortable="true">
-                                        <button className="datatable-sorter">Name</button>
-                                    </th>
-                                    <th scope="col" data-sortable="true" aria-sort="ascending" className="datatable-ascending">
-                                        <button className="datatable-sorter">Description</button>
-                                    </th>
-                                    <th scope="col" data-sortable="true">
-                                        <button className="datatable-sorter">Created At</button>
-                                    </th>
-                                    <th scope="col" data-sortable="true" className="red">
-                                        <button className="datatable-sorter">Status</button>
-                                    </th>
-                                    <th scope="col" data-sortable="true">
-                                        <button className="datatable-sorter">Actions</button>
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {chatbots}
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <div className="datatable-bottom">
-                        <div className="datatable-info">Showing 1 to 5 of 5 entries</div>
-                        <nav className="datatable-pagination"><ul className="datatable-pagination-list"></ul></nav>
-                    </div>
-                    </div>
-
-                </div>
-            </div> */}
         </main>
 
         <div id="chatbot-modals">
             <ChatbotDetails chatbot={selectedChatbot} handleCloseModal={handleCloseModal} />
+            <ChatbotDelete chatbot={selectedChatbot} handleCloseModal={handleCloseModal} onDeleteSuccess={handleDeleteSuccess} />
             {/* <EditChatbot chatbot={selectedChatbot} handleCloseModal={handleCloseModal} />
             <DeleteChatbot /> */}
         </div>

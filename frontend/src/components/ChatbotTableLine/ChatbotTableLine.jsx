@@ -69,7 +69,7 @@ const ChatbotTableLine = ({chatbot, onOpenModal}) => {
                 }
             </td> */}
             <td>{formatDate(chatbot.createdAt)}</td>
-            <td><span className={`badge bg-${getStatusClass(chatbot.status)} chatbot-status`}>{getStatusText(chatbot.status)}</span></td>
+            <td><span className={`badge text-bg-${getStatusClass(chatbot.status)} chatbot-status`}>{getStatusText(chatbot.status)}</span></td>
             <td>
                 <ul className="list-inline mb-0">
                     {chatbot.status === 'initialized' ? 
@@ -98,7 +98,7 @@ const ChatbotTableLine = ({chatbot, onOpenModal}) => {
                     
                     <li className="list-inline-item">
                         <span onClick={() => onOpenModal(chatbot)} className="modal-button" type="button" data-bs-toggle="modal" data-bs-target="#deleteChatbot">
-                            <span title="View" className="px-1 text-danger"><i className="bi bi-trash3"></i></span>
+                            <span title="Delete" className="px-1 text-danger"><i className="bi bi-trash3"></i></span>
                         </span>
                     </li>
                 </ul>
