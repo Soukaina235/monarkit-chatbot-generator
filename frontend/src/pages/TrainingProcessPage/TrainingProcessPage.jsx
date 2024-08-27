@@ -9,17 +9,50 @@ const TrainingProcessPage = () => {
     const [error, setError] = useState(null);
     const [success, setSuccess] = useState(null);
     const [trainingStatus, setTrainingStatus] = useState(null);
+    const [progress, setProgress] = useState(5);
+    const [stepClasses, setStepClasses] = useState({'processing': '', 'extraction': '', 'augmentation': '', 'validation': '', 'training': ''});
 
-    // useEffect(() => {
-    //     const interval = setInterval(() => {
-    //         fetch(`/api/chatbots/${id}/status/`)
-    //             .then(response => response.json())
-    //             .then(data => setTrainingStatus(data.status))
-    //             .catch(err => console.error(err));
-    //     }, 5000); // Poll every 5 seconds
+    const getProgressFromTrainingStatus = (status) => {
+        switch (status) {
+            case 'scraping':
+                return 5;
+            case 'processing':
+                return 10;
+            case 'extraction':
+                return 25;
+            case 'augmentation':
+                return 40;
+            case 'validation':
+                return 45;
+            case 'upload':
+                return 50;
+            case 'training':
+                return 70;
+            case 'completed':
+                return 100;
+        }
+    }
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            fetch(`/api/chatbots/${id}/status/`)
+                .then(response => response.json())
+                .then(data => {
+                    setTrainingStatus(data.status)
+                    setProgress(getProgressFromTrainingStatus(data.status));
+                    setStepClasses({
+                        'processing': data.status === 'extraction' ? 'completed' : '',
+                        'extraction': data.status === 'augmentation' ? 'completed' : '',
+                        'augmentation': data.status === 'validation' ? 'completed' : '',
+                        'validation': data.status === 'upload' ? 'completed' : '',
+                        'training': data.status === 'completed' ? 'completed' : ''
+                    });
+                })
+                .catch(err => console.error(err));
+        }, 5000); // Poll every 5 seconds
     
-    //     return () => clearInterval(interval); // Clear the interval when component unmounts
-    // }, [id]);
+        return () => clearInterval(interval); // Clear the interval when component unmounts
+    }, [id]);
 
     const handleStartTraining = async () => {
         console.log('Starting training...');
@@ -115,11 +148,6 @@ const TrainingProcessPage = () => {
                                     className="rounded-circle chatbot-image" 
                                 />
                                 <h2>{chatbot.name}</h2>
-                                <h3>
-                                    {/* {profile.activity? profile.activity :
-                                        <p className="small fst-italic text-muted">No information provided</p>
-                                    } */}
-                                </h3>
                             </div>
                         </div>
 
@@ -129,19 +157,76 @@ const TrainingProcessPage = () => {
 
                         <div className="card">
                             <div className="card-body pt-3 right-card">
-                                <button onClick={handleStartTraining} className="px-2 text-primary"><i className="bi bi-gear-fill"></i></button>
-    
+                                {chatbot.status === 'initialized' &&
+                                    <div>
+                                        <div className="alert alert-warning" role="alert">
+                                            ALERT: Your chatbot is not trained yet. Please start training.<br />
+                                            Once the training has started it cannot be stopped.
+                                        </div>
+                                        <button onClick={handleStartTraining} className="btn btn-primary start-training-button">
+                                            Start Training
+                                        </button>
+                                    </div>
+                                }
+                                
 
-                                <h3>Your chatbot is training...</h3>
-                                <div className="progress" role="progressbar" aria-label="Animated striped example" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">
-                                    <div className="progress-bar progress-bar-striped progress-bar-animated" style={{width: '75%' }}></div>
-                                </div>
-                                    
+                                {chatbot.status === 'training' &&
+                                    <>
+                                        <div className="alert alert-info" role="alert">
+                                            Your chatbot is training...
+                                        </div>
+                                        
+                                        <div className="progress" role="progressbar" aria-label="Animated striped example" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">
+                                            <div className="progress-bar progress-bar-striped progress-bar-animated" style={{width: `${progress}%` }}></div>
+                                        </div>
 
-                                <div className="tab-content pt-2">
-                                    ...
-                                </div>
 
+                                        <div className="progress-steps">
+                                            <div className="mb-3">
+                                                <div className="card-body">
+                                                    <div className="steps d-flex flex-wrap flex-sm-nowrap justify-content-between padding-top-2x padding-bottom-1x">
+                                                        <div className={`step ${setStepClasses}`}>
+                                                            <div className="step-icon-wrap">
+                                                                <div className="step-icon"><i className="bi bi-1-circle"></i></div>
+                                                            </div>
+                                                            <h4 className="step-title">Process Content</h4>
+                                                        </div>
+
+                                                        <div className={`step ${setStepClasses}`}>
+                                                            <div className="step-icon-wrap">
+                                                                <div className="step-icon"><i className="bi bi-2-circle"></i></div>
+                                                            </div>
+                                                            <h4 className="step-title">Generate Data</h4>
+                                                        </div>
+
+                                                        <div className="step">
+                                                            <div className="step-icon-wrap">
+                                                                <div className="step-icon"><i className="bi bi-3-circle"></i></div>
+                                                            </div>
+                                                            <h4 className="step-title">Augment Data</h4>
+                                                        </div>
+
+                                                        <div className="step">
+                                                            <div className="step-icon-wrap">
+                                                                <div className="step-icon"><i className="bi bi-4-circle"></i></div>
+                                                            </div>
+                                                            <h4 className="step-title">Validate Data</h4>
+                                                        </div>
+                                                        
+                                                        <div className="step">
+                                                            <div className="step-icon-wrap">
+                                                                <div className="step-icon"><i className="bi bi-5-circle"></i></div>
+                                                            </div>
+                                                            <h4 className="step-title">Train Model</h4>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                </div>
+
+                                        </div>
+                                    </>
+                                }
+                                
                             </div>
                         </div>
 
