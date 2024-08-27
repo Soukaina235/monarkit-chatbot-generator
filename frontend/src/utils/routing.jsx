@@ -12,6 +12,7 @@ import ChatPage from '../pages/ChatPage/ChatPage'
 import NewChatbotPage from '../pages/NewChatbotPage/NewChatbotPage'
 import ChatbotListPage from '../pages/ChatbotListPage/ChatbotListPage'
 import TrainingProcessPage from '../pages/TrainingProcessPage/TrainingProcessPage'
+import ChatbotWidget from '../components/ChatbotWidget/ChatbotWidget'
 
 function Routing() {
   const [notFound, setNotFound] = useState(false);
@@ -30,7 +31,7 @@ function Routing() {
     ];
 
     // Check if the current path is exactly one of the valid paths or starts with '/training/'
-    const isValidPath = validPaths.includes(location.pathname) || location.pathname.startsWith('/training/');
+    const isValidPath = validPaths.includes(location.pathname) || location.pathname.startsWith('/training/', '/widget/');
 
     setNotFound(!isValidPath);
   }, [location.pathname]);
@@ -46,6 +47,7 @@ function Routing() {
         <Route path='/new-chatbot' element={<NewChatbotPage />}/>
         <Route path='/chatbots' element={<ChatbotListPage />}/>
         <Route path="/training/:id" element={<TrainingProcessPage />} />
+        <Route path="/widget/:chatbotId" element={<ChatbotWidget />} />
         <Route path="*" element={<PageNotFound />} />
       </Routes>
       {!notFound && <Footer />}
