@@ -138,3 +138,13 @@ def send_message(request):
         # Save the conversation to the database if needed
 
         return JsonResponse({'message': bot_message})
+
+@api_view(['DELETE'])
+@permission_classes([IsAuthenticated])
+def delete_chatbot(request, chatbot_id):
+    try:
+        chatbot = Chatbot.objects.get(id=chatbot_id, owner=request.user)  # Ensure that the chatbot belongs to the logged-in user
+        chatbot.delete()
+        return Response({"message": "Chatbot deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
+    except Chatbot.DoesNotExist:
+        return Response({"error": "Chatbot not found."}, status=status.HTTP_404_NOT_FOUND)
