@@ -5,6 +5,7 @@ import { useParams } from "react-router-dom";
 const ChatWidget = () => {
 
     const { chatbotId } = useParams();
+    const { companyName } = useParams();
 
     // const responses = {
     //     "hello": "Hi there! How can I assist you today?",
@@ -61,6 +62,7 @@ const ChatWidget = () => {
         // });
 
         // const accessToken = JSON.parse(localStorage.getItem('authTokens')).access
+        // const companyName = getCompanyNameFromToken(accessToken);
 
         console.log('chatbotId : ', chatbotId);
 
@@ -71,6 +73,7 @@ const ChatWidget = () => {
                 // 'Authorization': `Bearer ${accessToken}`, // Add the Authorization header
             },
             body: JSON.stringify({
+                company_name: companyName,
                 chatbot_id: chatbotId,
                 user_input: userInput,
             }),

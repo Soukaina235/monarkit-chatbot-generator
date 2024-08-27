@@ -26,12 +26,23 @@ def get_augmented_data(data, system_message):
         answer = data[i]['answer']
         # response = item["messages"][2]["content"]
 
-        # Create a prompt for GPT-4
-        prompt = (f"You are given a question and a response. Your task is to generate 7 different reformulations of the given question while keeping the response the same.\n\n"
-                  f"Question: \"{question}\"\n"
-                  f"Response: \"{answer}\"\n\n"
-                  f"Generate 7 different reformulated questions based on the above example, while keeping the response the same.\n\n"
-                  f"Return your response in the form of a list of questions and answers in the form of a JSON object with keys 'question' and 'answer'")
+        # Create a prompt for GPT-4*
+        prompt = (f"You are given a question and a response. Your task is to generate 15 different reformulations of the given question while keeping the response the same.\n\n"
+          f"Question: \"{question}\"\n"
+          f"Response: \"{answer}\"\n\n"
+          f"Please consider the following when generating reformulated questions:\n"
+          f"- Use synonyms and different expressions.\n"
+          f"- Vary the sentence structure (e.g., direct questions, indirect questions).\n"
+          f"- Incorporate different contexts or levels of formality (e.g., using 'your', 'the company's', 'company_name's').\n"
+          f"- Change the tone or perspective (e.g., first person, third person).\n\n"
+          f"Generate 15 different reformulated questions based on the above example, while keeping the response the same.\n\n"
+          f"Return your response as a list of 15 JSON objects, each with 'question' and 'answer' keys, where 'answer' is the same for all objects.")
+
+        # prompt = (f"You are given a question and a response. Your task is to generate 15 different reformulations of the given question while keeping the response the same.\n\n"
+        #           f"Question: \"{question}\"\n"
+        #           f"Response: \"{answer}\"\n\n"
+        #           f"Generate 7 different reformulated questions based on the above example, while keeping the response the same.\n\n"
+        #           f"Return your response in the form of a list of questions and answers in the form of a JSON object with keys 'question' and 'answer'")
 
         # Call GPT-4 to generate reformulated questions
         response = client.chat.completions.create(

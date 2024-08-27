@@ -7,7 +7,7 @@ const formatDate = (dateString) => {
     return date.toLocaleDateString('en-US', options);
 }
 
-const ChatbotTableLine = (chatbot) => {
+const ChatbotTableLine = ({chatbot, onOpenModal}) => {
 
     console.log(chatbot);
     // Base URL of the backend
@@ -62,12 +62,12 @@ const ChatbotTableLine = (chatbot) => {
             />
             </td>
             <td>{chatbot.name}</td>
-            <td>
+            {/* <td>
                 {chatbot.description ? 
                     chatbot.description : 
                     <span className="small fst-italic text-muted">Not provided</span>
                 }
-            </td>
+            </td> */}
             <td>{formatDate(chatbot.createdAt)}</td>
             <td><span className={`badge bg-${getStatusClass(chatbot.status)} chatbot-status`}>{getStatusText(chatbot.status)}</span></td>
             <td>
@@ -75,7 +75,7 @@ const ChatbotTableLine = (chatbot) => {
                     {chatbot.status === 'initialized' ? 
                         (
                             <li className="list-inline-item">
-                                <Link to={`/training/${chatbot.id}`} onClick={handleStartTraining} data-bs-toggle="tooltip" data-bs-placement="top" title="Train" className="px-2 text-primary"><i className="bi bi-gear-fill"></i></Link>
+                                <Link to={`/training/${chatbot.id}`} onClick={handleStartTraining} className="px-2 text-success"><i className="bi bi-gear-fill"></i></Link>
                             </li>
                         ) :
                         (
@@ -85,16 +85,21 @@ const ChatbotTableLine = (chatbot) => {
                         )
                     }
                     <li className="list-inline-item">
-                        <a href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit" className="px-2 text-info"><i className="bi bi-pencil"></i></a>
+                        <span onClick={() => onOpenModal(chatbot)} className="modal-button" type="button" data-bs-toggle="modal" data-bs-target="#editChatbot">
+                            <span title="Edit" className="px-1 text-primary"><i className="bi bi-pencil"></i></span>
+                        </span>
                     </li>
+
                     <li className="list-inline-item">
-                        <a href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete" className="px-2 text-danger"><i className="bi bi-trash3"></i></a>
+                        <span onClick={() => onOpenModal(chatbot)} className="modal-button" type="button" data-bs-toggle="modal" data-bs-target={`#viewChatbot`}>
+                            <span title="View" className="px-1 text-info"><i className="bi bi-eye-fill"></i></span>
+                        </span>
                     </li>
-                    <li className="list-inline-item dropdown">
-                        <a className="text-muted dropdown-toggle font-size-18 px-2" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true"><i className="bi bi-three-dots-vertical"></i></a>
-                        <div className="dropdown-menu dropdown-menu-end">
-                            <a className="dropdown-item" href="#">Action</a><a className="dropdown-item" href="#">Another action</a><a className="dropdown-item" href="#">Something else here</a>
-                        </div>
+                    
+                    <li className="list-inline-item">
+                        <span onClick={() => onOpenModal(chatbot)} className="modal-button" type="button" data-bs-toggle="modal" data-bs-target="#deleteChatbot">
+                            <span title="View" className="px-1 text-danger"><i className="bi bi-trash3"></i></span>
+                        </span>
                     </li>
                 </ul>
             </td>

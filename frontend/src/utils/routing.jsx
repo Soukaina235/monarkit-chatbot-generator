@@ -43,11 +43,11 @@ function Routing() {
         <Route path="/profile" element={<PrivateRoute><ProfilePage /></PrivateRoute>} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/login" element={<LoginPage />} />
-        <Route path='/chat' element={<ChatPage />}/>
-        <Route path='/new-chatbot' element={<NewChatbotPage />}/>
-        <Route path='/chatbots' element={<ChatbotListPage />}/>
-        <Route path="/training/:id" element={<TrainingProcessPage />} />
-        <Route path="/widget/:chatbotId" element={<ChatbotWidget />} />
+        <Route path='/chat' element={<PrivateRoute><ChatPage /></PrivateRoute>}/>
+        <Route path='/new-chatbot' element={<PrivateRoute><NewChatbotPage /></PrivateRoute>}/>
+        <Route path='/chatbots' element={<PrivateRoute><ChatbotListPage /></PrivateRoute>}/>
+        <Route path="/training/:id" element={<PrivateRoute><TrainingProcessPage /></PrivateRoute>} />
+        <Route path="/widget/:companyName/:chatbotId" element={<ChatbotWidget />} />
         <Route path="*" element={<PageNotFound />} />
       </Routes>
       {!notFound && <Footer />}

@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import ChatbotTableLine from "../../components/ChatbotTableLine/ChatbotTableLine";
 import config from "../../config/config.development";
+import ChatbotDetails from "../../components/ChatbotDetails/ChatbotDetails";
 
 const ListChatbotPage = () => {
     const [chatbotData, setChatbotData] = useState(null);
@@ -36,14 +37,8 @@ const ListChatbotPage = () => {
                     return (
                         <ChatbotTableLine
                             key={chatbot.id}
-                            id={chatbot.id}
-                            name={chatbot.name}
-                            description={chatbot.description}
-                            avatar={chatbot.avatar}
-                            status={chatbot.status}
-                            createdAt={chatbot.created_at}
-                            websiteUrl={chatbot.website_url}
-                            // updated_at={chatbot.updated_at}
+                            chatbot={chatbot}
+                            onOpenModal={handleOpenModal}
                         />
                     );
                 })
@@ -57,6 +52,22 @@ const ListChatbotPage = () => {
           });
       }, []);
 
+    const [selectedChatbot, setSelectedChatbot] = useState(null);
+    const [modalType, setModalType] = useState(null);
+
+    const handleOpenModal = (chatbot, type) => {
+    setSelectedChatbot(chatbot);
+    // setModalType(type);
+    };
+
+    const handleCloseModal = () => {
+        console.log('Close modal');
+        console.log('Selected chatbot:', selectedChatbot);
+        setSelectedChatbot(null);
+        console.log('Selected chatbot:', selectedChatbot);
+    // setModalType(null);
+    };
+
     if (!chatbotData) return (
         <main className='loading'>
             <div className="spinner-border" role="status">
@@ -67,6 +78,7 @@ const ListChatbotPage = () => {
     );
 
     return (
+        <>
         <main>
 
             <div className="container">
@@ -123,7 +135,7 @@ const ListChatbotPage = () => {
                                             </th>
                                             <th scope="col">Avatar</th>
                                             <th scope="col">Name</th>
-                                            <th scope="col">Description</th>
+                                            {/* <th scope="col">Description</th> */}
                                             <th scope="col">Created At</th>
                                             <th scope="col">Status</th>
                                             <th scope="col" style={{ width: '200px' }}>Action</th>
@@ -221,6 +233,13 @@ const ListChatbotPage = () => {
                 </div>
             </div> */}
         </main>
+
+        <div id="chatbot-modals">
+            <ChatbotDetails chatbot={selectedChatbot} handleCloseModal={handleCloseModal} />
+            {/* <EditChatbot chatbot={selectedChatbot} handleCloseModal={handleCloseModal} />
+            <DeleteChatbot /> */}
+        </div>
+        </>
     )
 }
 
