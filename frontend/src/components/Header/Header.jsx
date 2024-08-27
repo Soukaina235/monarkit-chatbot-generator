@@ -101,8 +101,9 @@ const Header = () => {
                 <li><Link to="/">Home</Link></li>
                 {user ? (
                   <> 
-                    <li onClick={logoutUser}><a href='#'>Logout</a></li>
                     <li><Link to="/profile">Profile</Link></li>
+                    <li><Link to="/chatbots">My Chatbots</Link></li>
+                    <li onClick={logoutUser}><a href='#'>Logout</a></li>
                   </>
                 ) : (
                 <>
@@ -110,10 +111,9 @@ const Header = () => {
                   <li><Link to="/register">Register</Link></li>
                 </>
                 )}
-                <li><a href="team.html">Team</a></li>
 
-                {/* Main Dropdown */}
-                <li className="dropdown">
+                
+                {/* <li className="dropdown">
                   <a href="#"
                     onClick={(e) => { e.preventDefault(); toggleDropdown(0); }}  
                   >
@@ -136,7 +136,7 @@ const Header = () => {
                     <li><a href="#">Dropdown 4</a></li>
                   </ul>
                 </li>
-                <li><a href="contact.html">Contact</a></li>
+                <li><a href="contact.html">Contact</a></li> */}
               </ul>
             </nav>
 

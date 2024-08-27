@@ -1,0 +1,54 @@
+
+/*--------------------------------------------------------------
+# chatbot view modal
+--------------------------------------------------------------*/
+main {
+    width: 80%;
+    margin: auto;
+    margin-top: 40px;
+}
+
+.chatbot-card h2 {
+    font-size: 24px;
+    font-weight: 700;
+    color: #2c384e;
+    margin: 10px 0 0 0;
+}
+
+.chatbot-card h3 {
+    font-size: 18px;
+}
+
+.chatbot-overview .row {
+    margin-bottom: 20px;
+    font-size: 15px;
+}
+
+.chatbot-overview .card-title {
+    color: #012970;
+}
+
+.chatbot-overview .label {
+    font-weight: 600;
+    color: rgba(1, 41, 112, 0.6);
+}
+
+.modal-img {
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+}
+
+.modal-img-title{
+    display: flex;
+    align-items: center;
+    gap: 7px;
+}
+
+.modal-title {
+    color: rgba(1, 41, 112, 0.6);
+}
+
+.progress-bar {
+    background-color: var(--color-light-blue) !important;
+}

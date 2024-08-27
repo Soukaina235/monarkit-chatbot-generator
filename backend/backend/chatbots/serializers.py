@@ -5,7 +5,7 @@ from backend.chatbots.models import Chatbot
 class ChatbotSerializer(serializers.ModelSerializer):
     class Meta:
         model = Chatbot
-        fields = ['id', 'name', 'description', 'avatar', 'website_url', 'status', 'created_at']
+        fields = ['id', 'name', 'description', 'avatar', 'website_url', 'status', 'created_at', 'training_step']
         # read_only_fields = ['id', 'created_at']
 
     def get_avatar(self, obj):
