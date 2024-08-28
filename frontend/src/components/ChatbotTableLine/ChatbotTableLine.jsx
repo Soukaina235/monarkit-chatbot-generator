@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import './ChatbotTableLine.css';
+import { getCompanyNameFromToken } from '../../utils/TokenUtils';
 
 const formatDate = (dateString) => {
     const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true };
@@ -8,8 +10,88 @@ const formatDate = (dateString) => {
 }
 
 const ChatbotTableLine = ({chatbot, onOpenModal}) => {
+    const [copySuccess, setCopySuccess] = useState('');
 
-    console.log(chatbot);
+    const copyCode = (chatbot) => {
+        const accessToken = JSON.parse(localStorage.getItem('authTokens')).access
+        const companyName = getCompanyNameFromToken(accessToken);
+        const chatbotId = chatbot.id;
+        const code = `
+            <script>
+                (function() {
+                    const rootContainer = document.createElement('div');
+                    const widgetContainer = document.createElement('div');
+                    widgetContainer.id = 'chatbot-widget';
+                    widgetContainer.style.position = 'fixed';
+                    widgetContainer.style.bottom = '20px';
+                    widgetContainer.style.right = '20px';
+                    widgetContainer.style.width = '400px';
+                    widgetContainer.style.height = '600px';
+                    widgetContainer.style.backgroundColor = '#ffffff';
+                    widgetContainer.style.border = '1px solid #ccc';
+                    widgetContainer.style.borderRadius = '10px';
+                    widgetContainer.style.boxShadow = '0 0 10px rgba(0,0,0,0.1)';
+                    widgetContainer.style.zIndex = '9998';
+                    widgetContainer.style.display = 'none'; // Initially hidden
+                
+                    const toggleButton = document.createElement('button');
+                    toggleButton.style.position = 'absolute';
+                    toggleButton.style.bottom = '20px';
+                    toggleButton.style.right = '20px';
+                    toggleButton.style.padding = '12px 15px';
+                    toggleButton.style.backgroundColor = '#1087FF';
+                    toggleButton.style.color = '#fff';
+                    toggleButton.style.border = 'none';
+                    toggleButton.style.borderRadius = '5px';
+                    toggleButton.style.padding = '10px';
+                    toggleButton.style.cursor = 'pointer';
+                    toggleButton.style.display = 'block';
+                    toggleButton.style.zIndex = '9999';
+                    toggleButton.style.fontSize = '20px';
+                    toggleButton.style.borderRadius = '30px';
+                    toggleButton.style.transition = 'all 0.3s ease';
+
+                    toggleButton.onclick = () => {
+                        widgetContainer.style.display = widgetContainer.style.display === 'none' ? 'block' : 'none';
+                    };
+
+                    const link = document.createElement('link');
+                    link.rel = 'stylesheet';
+                    link.href = 'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.5/font/bootstrap-icons.min.css';
+                    document.head.appendChild(link);
+
+                    const icon = document.createElement('i');
+                    icon.className = 'bi bi-robot'; // Replace with desired icon class
+                    toggleButton.appendChild(icon);
+                
+                    rootContainer.appendChild(toggleButton);
+                    rootContainer.appendChild(widgetContainer);
+                
+                    const iframe = document.createElement('iframe');
+                    iframe.src = 'http://localhost:5173/widget/${companyName}/${chatbotId}';
+                    iframe.style.width = '100%';
+                    iframe.style.height = '100%';
+                    iframe.style.border = 'none';
+                
+                    widgetContainer.appendChild(iframe);
+                
+                    document.body.appendChild(rootContainer);
+                })();
+            </script>
+        `;
+        navigator.clipboard.writeText(code)
+            .then(() => {
+                setCopySuccess('Code copied to clipboard!');                
+                setTimeout(() => setCopySuccess(''), 3000); // Hide message after 3 seconds
+            })
+            .catch(err => {
+                console.error('Failed to copy code:', err);
+                // Optionally, handle the error case
+            });
+    }
+
+
+    // console.log(chatbot);
     // Base URL of the backend
     const baseUrl = 'http://127.0.0.1:8000';
 
@@ -58,7 +140,7 @@ const ChatbotTableLine = ({chatbot, onOpenModal}) => {
                 <img 
                 alt="Chatbot avatar" 
                 className="avatar-sm rounded-circle me-2" 
-                src={chatbot.avatar ? `${baseUrl}${chatbot.avatar}` : "chatbot-avatar7.png"}
+                src={chatbot.avatar ? `${baseUrl}${chatbot.avatar}` : "default-chatbot-avatar.png"}
             />
             </td>
             <td>{chatbot.name}</td>
@@ -84,12 +166,16 @@ const ChatbotTableLine = ({chatbot, onOpenModal}) => {
                             </li>
                         )
                     }
-                    <li className="list-inline-item">
+                    {/* <li className="list-inline-item">
                         <span onClick={() => onOpenModal(chatbot)} className="modal-button" type="button" data-bs-toggle="modal" data-bs-target="#editChatbot">
                             <span title="Edit" className="px-1 text-primary"><i className="bi bi-pencil"></i></span>
                         </span>
+                    </li> */}
+                    <li className="list-inline-item">
+                        <span onClick={() => copyCode(chatbot)} className="copy-code-button">
+                            <span title="Copy Code" className="px-1 text-primary"><i className="bi bi-code-slash"></i></span>
+                        </span>
                     </li>
-
                     <li className="list-inline-item">
                         <span onClick={() => onOpenModal(chatbot)} className="modal-button" type="button" data-bs-toggle="modal" data-bs-target={`#viewChatbot`}>
                             <span title="View" className="px-1 text-info"><i className="bi bi-eye-fill"></i></span>

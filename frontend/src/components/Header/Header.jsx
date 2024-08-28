@@ -57,15 +57,15 @@ const Header = () => {
           <nav id="navbar" className={`navbar ${isMobileNavActive ? 'mobile-nav-active' : ''}`}>
             <ul>
               <li>
-                <NavLink to="/" exact activeClassName="active">Home</NavLink>
+                <NavLink to="/" className={({ isActive }) => (isActive ? "active" : undefined)}>Home</NavLink>
               </li>
               {user ? (
                 <> 
                   <li>
-                    <NavLink to="/profile" activeClassName="active">Profile</NavLink>
+                    <NavLink to="/profile" className={({ isActive }) => (isActive ? "active" : undefined)}>Profile</NavLink>
                   </li>
                   <li>
-                    <NavLink to="/chatbots" activeClassName="active">My Chatbots</NavLink>
+                    <NavLink to="/chatbots" className={({ isActive }) => (isActive ? "active" : undefined)}>My Chatbots</NavLink>
                   </li>
                   <li onClick={logoutUser}>
                     <a href='#'>Logout</a>
@@ -74,10 +74,10 @@ const Header = () => {
               ) : (
                 <>
                   <li>
-                    <NavLink to="/login" activeClassName="active">Login</NavLink>
+                    <NavLink to="/login" className={({ isActive }) => (isActive ? "active" : undefined)}>Login</NavLink>
                   </li>
                   <li>
-                    <NavLink to="/register" activeClassName="active">Register</NavLink>
+                    <NavLink to="/register" className={({ isActive }) => (isActive ? "active" : undefined)}>Register</NavLink>
                   </li>
                 </>
               )}
