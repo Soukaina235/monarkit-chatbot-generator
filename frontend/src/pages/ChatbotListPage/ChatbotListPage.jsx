@@ -103,7 +103,7 @@ const ListChatbotPage = () => {
                 <div className="row align-items-center">
                     <div className="col-md-6">
                         <div className="mb-3">
-                            <h5 className="card-title">Your Chatbots</h5>
+                            <h5 className="card-title">My Chatbots</h5>
                         </div>
                     </div>
                     <div className="col-md-6">

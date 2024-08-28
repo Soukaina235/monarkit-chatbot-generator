@@ -1,7 +1,7 @@
 from django.urls import path
 from .views import register, get_company_profile, update_profile, change_password
 
-# routes are prefixed by /api/users
+# routes are prefixed by /api
 urlpatterns = [
     path('register/', register, name='register'),
     path('profile/', get_company_profile, name='get_company_profile'),

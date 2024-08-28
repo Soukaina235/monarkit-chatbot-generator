@@ -15,12 +15,15 @@ const Register = () => {
   const [country, setCountry] = useState('');
   const [address, setAddress] = useState('');
   const [about, setAbout] = useState('');
+
+  const [loading, setLoading] = useState(false);  
   
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
 
   const successRef = useRef(null);
   const errorRef = useRef(null);
+
   useEffect(() => {
     if (successRef.current) {
       const top = successRef.current.getBoundingClientRect().top + window.scrollY;
@@ -44,6 +47,7 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
       const response = await axios.post(`${config.backendUrl}/api/register/`, {
         email,
@@ -67,10 +71,12 @@ const Register = () => {
         setPhone('');
         setAbout('');
         setError('');
+        setLoading(false);
       }
     } catch (err) {
       setError('Registration failed. Please try again.');
       setSuccess('');
+      setLoading(false);
     }
   };
 
@@ -208,7 +214,10 @@ const Register = () => {
                         </div>
 
                         <div className="col-12">
-                          <button className="register-button btn btn-primary w-100" type="submit">Create Account</button>
+                          <button className="login-button btn btn-primary w-100" type="submit" disabled={loading}>
+                            {loading && <span class="spinner-grow spinner-grow-sm" aria-hidden="true"></span>}
+                            <span>Create Account</span>
+                          </button>
                         </div>
                         <div className="col-12">
                           <p className="small mb-0">Already have an account? <Link to="/login">Login</Link></p>

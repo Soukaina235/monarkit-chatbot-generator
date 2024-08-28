@@ -18,11 +18,15 @@
   }
   
   .submit-button {
-    background-color: #5a417c;
-    border: #5a417c;
+    /* background-color: #5a417c;
+    border: #5a417c; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
   }
   
-  .submit-button:hover {
+  /* .submit-button:hover {
     background-color: #694F8E;
     border: #694F8E;
   }
@@ -32,4 +36,4 @@
     border: #694F8E !important;
     box-shadow: none;
     color: white;
-  }
+  } */

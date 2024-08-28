@@ -7,10 +7,13 @@ const LoginPage = () => {
   let {loginUser} = useContext(AuthContext);
 
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     const errorMessage = await loginUser(e);
+    setLoading(false);
     if (errorMessage) {
       setError(errorMessage);
     }
@@ -90,7 +93,10 @@ const LoginPage = () => {
                           </div>
                         </div>
                         <div className="col-12">
-                          <button className="login-button btn btn-primary w-100" type="submit">Login</button>
+                          <button className="login-button btn btn-primary w-100" type="submit" disabled={loading}>
+                            {loading && <span class="spinner-grow spinner-grow-sm" aria-hidden="true"></span>}
+                            <span>Login</span>
+                          </button>
                         </div>
                         <div className="col-12">
                           <p className="small mb-0">Don't have account? <Link to="/register">Create an account</Link></p>
