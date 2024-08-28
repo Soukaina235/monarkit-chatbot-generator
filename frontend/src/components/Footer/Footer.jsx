@@ -1,5 +1,6 @@
 import React from 'react'
 import './Footer.css';
+import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
@@ -8,49 +9,42 @@ const Footer = () => {
           <div className="footer-content">
             <div className="container">
               <div className="row gy-4">
-                <div className="col-lg-5 col-md-12 footer-info">
+                <div className="col-lg-4 col-md-8 footer-info">
                   <a href="index.html" className="logo d-flex align-items-center">
                   <span>Aionchat</span>
                   </a>
                   <p>Designed and built by Monarkit.</p>
                   <div className="social-links d-flex  mt-3">
-                    <a href="#" className="twitter"><i className="bi bi-twitter"></i></a>
-                    <a href="#" className="facebook"><i className="bi bi-facebook"></i></a>
-                    <a href="#" className="instagram"><i className="bi bi-instagram"></i></a>
-                    <a href="#" className="linkedin"><i className="bi bi-linkedin"></i></a>
+                    <Link target='_blank' to="https://www.youtube.com/@Monarkit" className="youtube"><i className="bi bi-youtube"></i></Link>
+                    <Link target='_blank' to="https://www.facebook.com/Monarkit.net" className="facebook"><i className="bi bi-facebook"></i></Link>
+                    <Link target='_blank' to="https://www.instagram.com/monarkit_net/" className="instagram"><i className="bi bi-instagram"></i></Link>
+                    <Link target='_blank' to="https://www.linkedin.com/company/monarkit/mycompany/verification/" className="linkedin"><i className="bi bi-linkedin"></i></Link>
                   </div>
                 </div>
 
-                <div className="col-lg-2 col-6 footer-links">
+                <div className="col-lg-2 col-4 footer-links">
                   <h4>Useful Links</h4>
                   <ul>
                     <li><i className="bi bi-dash"></i> <a href="#">Home</a></li>
-                    <li><i className="bi bi-dash"></i> <a href="#">About us</a></li>
-                    <li><i className="bi bi-dash"></i> <a href="#">Services</a></li>
-                    <li><i className="bi bi-dash"></i> <a href="#">Terms of service</a></li>
-                    <li><i className="bi bi-dash"></i> <a href="#">Privacy policy</a></li>
                   </ul>
                 </div>
 
-                <div className="col-lg-2 col-6 footer-links">
+                <div className="col-lg-3 col-4 footer-links">
                   <h4>Our Services</h4>
                   <ul>
-                    <li><i className="bi bi-dash"></i> <a href="#">Web Design</a></li>
                     <li><i className="bi bi-dash"></i> <a href="#">Web Development</a></li>
-                    <li><i className="bi bi-dash"></i> <a href="#">Product Management</a></li>
-                    <li><i className="bi bi-dash"></i> <a href="#">Marketing</a></li>
-                    <li><i className="bi bi-dash"></i> <a href="#">Graphic Design</a></li>
+                    <li><i className="bi bi-dash"></i> <a href="#">Mobile Development</a></li>
                   </ul>
                 </div>
 
-                <div className="col-lg-3 col-md-12 footer-contact text-center text-md-start">
+                <div className="col-lg-2 col-8 footer-contact text-center text-md-start">
                   <h4>Contact Us</h4>
                   <p>
-                    A108 Adam Street <br />
-                    New York, NY 535022<br />
-                    United States <br /><br />
-                    <strong>Phone:</strong> +1 5589 55488 55<br />
-                    <strong>Email:</strong> info@example.com<br />
+                    Centre d'affaire Bergis, <br />
+                    5ème étage Bureau 18, Avenue SAFI - Marrakech<br />
+                    Morocco <br /><br />
+                    <strong>Phone:</strong> +(212) 808503103<br />
+                    <strong>Email:</strong> contact@aionchat.net<br />
                   </p>
                 </div>
 

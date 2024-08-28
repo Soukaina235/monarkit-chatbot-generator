@@ -5,6 +5,7 @@ import config from '../../config/config.development';
 const ChangePassword = ({ onSuccess, onError }) => {
     
   let {logoutUser} = useContext(AuthContext);
+  let [loading, setLoading] = useState(false);
 
     const [formData, setFormData] = useState({
         current_password: '',
@@ -23,11 +24,14 @@ const ChangePassword = ({ onSuccess, onError }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
+        setLoading(true);
+
         const { current_password, new_password, renew_password } = formData;
         const accessToken = JSON.parse(localStorage.getItem('authTokens')).access
 
         if (new_password !== renew_password) {
             onError('New passwords do not match');
+            setLoading(false);
             return;
         }
 
@@ -52,8 +56,10 @@ const ChangePassword = ({ onSuccess, onError }) => {
             } else {
                 onError(data.error || 'An error occurred');
             }
+            setLoading(false);
         } catch (error) {
             onError('An unexpected error occurred');
+            setLoading(false);
         }
     };
 
@@ -114,7 +120,10 @@ const ChangePassword = ({ onSuccess, onError }) => {
                 </div>
 
                 <div className="text-center">
-                <button type="submit" className="btn btn-primary">Change Password</button>
+                    <button className="btn btn-primary" type="submit" disabled={loading}>
+                        {loading && <span class="spinner-grow spinner-grow-sm" aria-hidden="true"></span>}
+                        <span>Change Password</span>
+                    </button>
                 </div>
             </form>
 

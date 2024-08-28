@@ -15,6 +15,8 @@ const ProfileEdit = ({ profile, setProfile, onSuccess, onError }) => {
     });
     const [profileImageChanged, setProfileImageChanged] = useState(false);
 
+    const [loading, setLoading] = useState(false);
+
     useEffect(() => {
         setFormData({
             email: profile.email,
@@ -79,6 +81,8 @@ const ProfileEdit = ({ profile, setProfile, onSuccess, onError }) => {
 
         e.preventDefault();
 
+        setLoading(true);
+
         console.log('From handleSubmit formData.profile_image :', formData.profile_image);
         const formDataObj = new FormData();
         for (let key in formData) {
@@ -109,9 +113,11 @@ const ProfileEdit = ({ profile, setProfile, onSuccess, onError }) => {
                 console.error('Error updating profile:', data);
                 onError(data.error || 'An error occurred');
             }
+            setLoading(false);
         } catch (error) {
             console.error('Error:', error);
             onError('An unexpected error occurred');
+            setLoading(false);
         }
     };
 
@@ -247,10 +253,10 @@ const ProfileEdit = ({ profile, setProfile, onSuccess, onError }) => {
                 </div>
 
                 <div className="text-center">
-                    <button 
-                        type="submit" 
-                        className="btn btn-primary"
-                    >Save Changes</button>
+                    <button className="btn btn-primary" type="submit" disabled={loading}>
+                        {loading && <span class="spinner-grow spinner-grow-sm" aria-hidden="true"></span>}
+                        <span>Save Changes</span>
+                    </button>
                 </div>
             </form>
 

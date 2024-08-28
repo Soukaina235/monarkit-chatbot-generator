@@ -252,3 +252,8 @@
     z-index: 9996;
   }
 }
+
+.navbar ul li .active {
+  color: #FFF; /* Example color */
+  font-weight: 400;
+}

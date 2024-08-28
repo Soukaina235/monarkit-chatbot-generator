@@ -5,11 +5,33 @@ import config from '../../config/config.development';
 
 const NewChatbotPage = () => {
 
+    const [loading, setLoading] = useState(false);
+
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
   
     const successRef = useRef(null);
     const errorRef = useRef(null);
+
+    useEffect(() => {
+        if (successRef.current) {
+          const top = successRef.current.getBoundingClientRect().top + window.scrollY;
+          window.scrollTo({
+            top: top - 100, // Adjust the value according to your navbar height
+            behavior: 'smooth',
+          });
+        }
+    }, [success]);
+    
+    useEffect(() => {
+        if (errorRef.current) {
+            const top = errorRef.current.getBoundingClientRect().top + window.scrollY;
+            window.scrollTo({
+            top: top - 100, // Adjust the value according to your navbar height
+            behavior: 'smooth',
+            });
+        }
+    }, [error]);
     
     const [formData, setFormData] = useState({
         name: '',
@@ -31,6 +53,7 @@ const NewChatbotPage = () => {
         const accessToken = JSON.parse(localStorage.getItem('authTokens')).access
 
         e.preventDefault();
+        setLoading(true);
 
         console.log("from handle submit form data", formData);
 
@@ -59,13 +82,16 @@ const NewChatbotPage = () => {
             if (response.ok) {
                 console.log('Chatbot initialized successfully:', data);
                 setSuccess('Chatbot initialized successfully!');
+                setLoading(false);
             } else {
                 console.error('Error initializing chatbot:', data);
                 setError(data.error || 'An error occurred');
+                setLoading(false);
             }
         } catch (error) {
             console.error('Error:', error);
             setError('An unexpected error occurred. Please try again later.');
+            setLoading(false);
         }
     };
     
@@ -160,7 +186,10 @@ const NewChatbotPage = () => {
                             
 
                             <div className="col-12">
-                                <button className="submit-button btn btn-primary w-100" type="submit">Initialize Chatbot</button>
+                                <button className="submit-button btn btn-primary w-100" type="submit" disabled={loading}>
+                                    {loading && <span class="spinner-grow spinner-grow-sm" aria-hidden="true"></span>}
+                                    <span>Initialize Chatbot</span>
+                                </button>
                             </div>
 
                         </form>
