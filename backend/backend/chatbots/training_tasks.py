@@ -14,6 +14,7 @@ system_message = "You are an assistant that generates reformulated questions bas
 def start_scraping(chatbot_id):
     print("Starting scraping")
     chatbot = Chatbot.objects.get(id=chatbot_id)
+    chatbot.status = "training"
     chatbot.training_step = "scraping"
     chatbot.save()
     content = scrape_website_content(chatbot.website_url)
@@ -46,11 +47,11 @@ def augment_dataset(chatbot_id, content, user_id):
     chatbot = Chatbot.objects.get(id=chatbot_id)
     chatbot.training_step = "augmentation" 
     chatbot.save()
-    dataset_path = augment_data(content, system_message, user_id)
-    chatbot.dataset_file_path = dataset_path
+    dataset_path = augment_data(chatbot_id, content, system_message, user_id)
+    chatbot.dataset_file_path = dataset_path["file_name"]
     chatbot.save()
     print("Augmentation done")
-    return dataset_path
+    return dataset_path["full_path"]
 
 @shared_task
 def validate_dataset(chatbot_id, dataset_path):
@@ -58,9 +59,9 @@ def validate_dataset(chatbot_id, dataset_path):
     chatbot = Chatbot.objects.get(id=chatbot_id)
     chatbot.training_step = "validation"
     chatbot.save()
-    validated_dataset_format = validate_dataset_format(dataset_path)
+    validated_dataset_path = validate_dataset_format(dataset_path)
     print("Validation done")
-    return validated_dataset_format
+    return validated_dataset_path
 
 @shared_task
 def upload_dataset(chatbot_id, dataset_path):
@@ -117,8 +118,8 @@ def start_training_pipeline(chatbot_id, user_id):
     processed_content = process_content(chatbot_id, content)
     questions_answers = extract_qa_pairs(chatbot_id, processed_content)
     dataset_path = augment_dataset(chatbot_id, questions_answers, user_id)
-    validate_dataset_path = validate_dataset(chatbot_id, dataset_path)
-    uploaded_dataset_id = upload_dataset(chatbot_id, validate_dataset_path)
+    validated_dataset_path = validate_dataset(chatbot_id, dataset_path)
+    uploaded_dataset_id = upload_dataset(chatbot_id, validated_dataset_path)
     job_id = start_training(chatbot_id, uploaded_dataset_id)
     model_id = check_fine_tuning_status(chatbot_id, job_id)
     print(f"Training successful with model id: {model_id}")

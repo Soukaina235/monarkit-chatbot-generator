@@ -81,11 +81,13 @@ const ChatbotTableLine = ({chatbot, onOpenModal}) => {
         `;
         navigator.clipboard.writeText(code)
             .then(() => {
-                setCopySuccess('Code copied to clipboard!');                
+                setCopySuccess('Code copied to clipboard!'); 
+                alert('Code copied to clipboard!');               
                 setTimeout(() => setCopySuccess(''), 3000); // Hide message after 3 seconds
             })
             .catch(err => {
                 console.error('Failed to copy code:', err);
+                alert('Failed to copy code to clipboard. Please try again.');
                 // Optionally, handle the error case
             });
     }
@@ -106,9 +108,9 @@ const ChatbotTableLine = ({chatbot, onOpenModal}) => {
             case 'cancelled':
                 return 'secondary text-white';
             case 'training':
-                return 'warning text-dark';
+                return 'warning text-white';
             default:
-                return 'light text-dark'; // Default class for unknown status
+                return 'light text-white'; // Default class for unknown status
         }
     };
 
@@ -150,7 +152,7 @@ const ChatbotTableLine = ({chatbot, onOpenModal}) => {
                     <span className="small fst-italic text-muted">Not provided</span>
                 }
             </td> */}
-            <td>{formatDate(chatbot.createdAt)}</td>
+            <td>{formatDate(chatbot.created_at)}</td>
             <td><span className={`badge text-bg-${getStatusClass(chatbot.status)} chatbot-status`}>{getStatusText(chatbot.status)}</span></td>
             <td>
                 <ul className="list-inline mb-0">
@@ -171,11 +173,22 @@ const ChatbotTableLine = ({chatbot, onOpenModal}) => {
                             <span title="Edit" className="px-1 text-primary"><i className="bi bi-pencil"></i></span>
                         </span>
                     </li> */}
-                    <li className="list-inline-item">
-                        <span onClick={() => copyCode(chatbot)} className="copy-code-button">
-                            <span title="Copy Code" className="px-1 text-primary"><i className="bi bi-code-slash"></i></span>
-                        </span>
-                    </li>
+
+                    {chatbot.status === 'trained' ? 
+                        <li className="list-inline-item">
+                            <span onClick={() => copyCode(chatbot)} className="copy-code-button">
+                                <span title="Copy Code" className="px-1 text-primary"><i className="bi bi-code-slash"></i></span>
+                            </span>
+                        </li> :
+                        (
+                            <li className="list-inline-item">
+                                <span className="copy-code-button">
+                                    <span title="Copy Code" className="px-1 text-secondary training-inactive"><i className="bi bi-code-slash"></i></span>
+                                </span>
+                            </li> 
+                        )
+                    }
+                    
                     <li className="list-inline-item">
                         <span onClick={() => onOpenModal(chatbot)} className="modal-button" type="button" data-bs-toggle="modal" data-bs-target={`#viewChatbot`}>
                             <span title="View" className="px-1 text-info"><i className="bi bi-eye-fill"></i></span>

@@ -31,7 +31,7 @@ def start_fine_tunning_job(file_id):
     response = client.fine_tuning.jobs.create(
     training_file=file_id,
     model=model_name,
-    suffix="first",
+    suffix="aionchat",
     )
 
     job_id = response.id

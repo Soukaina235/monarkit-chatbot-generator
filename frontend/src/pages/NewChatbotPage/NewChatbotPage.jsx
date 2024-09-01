@@ -187,7 +187,7 @@ const NewChatbotPage = () => {
 
                             <div className="col-12">
                                 <button className="submit-button btn btn-primary w-100" type="submit" disabled={loading}>
-                                    {loading && <span class="spinner-grow spinner-grow-sm" aria-hidden="true"></span>}
+                                    {loading && <span className="spinner-grow spinner-grow-sm" aria-hidden="true"></span>}
                                     <span>Initialize Chatbot</span>
                                 </button>
                             </div>

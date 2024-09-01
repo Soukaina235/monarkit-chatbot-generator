@@ -94,7 +94,7 @@ const LoginPage = () => {
                         </div>
                         <div className="col-12">
                           <button className="login-button btn btn-primary w-100" type="submit" disabled={loading}>
-                            {loading && <span class="spinner-grow spinner-grow-sm" aria-hidden="true"></span>}
+                            {loading && <span className="spinner-grow spinner-grow-sm" aria-hidden="true"></span>}
                             <span>Login</span>
                           </button>
                         </div>

@@ -6,7 +6,7 @@ from django.http import JsonResponse
 from .models import Chatbot
 from .serializers import ChatbotSerializer
 from django.http import JsonResponse
-from .training_tasks import start_training_pipeline
+from .training_tasks import start_training_pipeline, check_fine_tuning_status
 from django.views.decorators.csrf import csrf_exempt
 from openai import OpenAI
 import json
@@ -148,3 +148,14 @@ def delete_chatbot(request, chatbot_id):
         return Response({"message": "Chatbot deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
     except Chatbot.DoesNotExist:
         return Response({"error": "Chatbot not found."}, status=status.HTTP_404_NOT_FOUND)
+    
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def get_training_step(request, chatbot_id):
+    try:
+        chatbot = Chatbot.objects.get(id=chatbot_id, owner=request.user)
+    except Chatbot.DoesNotExist:
+        return Response({'error': 'Chatbot not found'}, status=status.HTTP_404_NOT_FOUND)
+
+    training_step = chatbot.training_step
+    return JsonResponse({'chatbot_id': chatbot_id, 'training_step': training_step})

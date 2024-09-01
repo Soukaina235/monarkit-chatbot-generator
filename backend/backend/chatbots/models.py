@@ -17,7 +17,7 @@ class Chatbot(models.Model):
     # Status choices
     STATUS_CHOICES = [
         ('initialized', 'Initialized'),
-        ('trained', 'Trained'),
+        ('training', 'Training'),
         ('failed', 'Failed'),
         ('cancelled', 'Cancelled'),
         ('training', 'Training'),

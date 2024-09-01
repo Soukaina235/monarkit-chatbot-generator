@@ -51,7 +51,7 @@ const ChatbotDelete = ({ chatbot, handleCloseModal, onDeleteSuccess }) => {
                         <img 
                             alt="Chatbot avatar" 
                             className="avatar-sm rounded-circle me-3 modal-img" 
-                            src={chatbot?.avatar ? `${config.backendUrl}${chatbot?.avatar}` : "chatbot-avatar7.png"}
+                            src={chatbot?.avatar ? `${config.backendUrl}${chatbot?.avatar}` : "default-chatbot-avatar.png"}
                         />
                         <h1 className="modal-title fs-5" id="deleteChatbotLabel">{chatbot?.name}</h1>
                     </div>

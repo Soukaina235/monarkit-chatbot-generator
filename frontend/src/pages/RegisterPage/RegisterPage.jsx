@@ -4,6 +4,7 @@ import './RegisterPage.css';
 // import logo from '../../../public/logo.png';
 import { Link } from 'react-router-dom';
 import config from '../../config/config.development';
+import countriesData from '../../utils/countries.json';
 
 
 const Register = () => {
@@ -79,9 +80,8 @@ const Register = () => {
       setLoading(false);
     }
   };
-
-
       
+  // console.log('countries', countriesData.countries);
 
   return (
     <div>
@@ -164,10 +164,28 @@ const Register = () => {
 
                         <div className="col-12">
                           <label htmlFor="country" className="form-label">Country</label>
-                          <input type="text" name="country" className="form-control" id="country" required
+                          <select
+                            name="country"
+                            className="form-select"
+                            aria-label="Default select example"
+                            id="country"
+                            required
                             value={country}
                             onChange={(e) => setCountry(e.target.value)}
-                          />
+                          >
+                            <option value="">Choose a country</option>
+                            {
+                            countriesData.countries.map((countryObj, index) => (
+                              <option key={index} value={countryObj.name}>
+                                {countryObj.name}
+                              </option>
+                            ))}
+                          </select>
+                          {/* <input type="text" name="country" className="form-control" id="country" required
+                            value={country}
+                            onChange={(e) => setCountry(e.target.value)}
+                          /> */}
+                          
                         </div>
 
                         <div className="col-12">
@@ -215,7 +233,7 @@ const Register = () => {
 
                         <div className="col-12">
                           <button className="login-button btn btn-primary w-100" type="submit" disabled={loading}>
-                            {loading && <span class="spinner-grow spinner-grow-sm" aria-hidden="true"></span>}
+                            {loading && <span className="spinner-grow spinner-grow-sm" aria-hidden="true"></span>}
                             <span>Create Account</span>
                           </button>
                         </div>

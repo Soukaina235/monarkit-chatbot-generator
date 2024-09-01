@@ -254,7 +254,7 @@ const ProfileEdit = ({ profile, setProfile, onSuccess, onError }) => {
 
                 <div className="text-center">
                     <button className="btn btn-primary" type="submit" disabled={loading}>
-                        {loading && <span class="spinner-grow spinner-grow-sm" aria-hidden="true"></span>}
+                        {loading && <span className="spinner-grow spinner-grow-sm" aria-hidden="true"></span>}
                         <span>Save Changes</span>
                     </button>
                 </div>
