@@ -6,6 +6,9 @@ import config from "../../config/config.development";
 import ChatbotDetails from "../../components/ChatbotDetails/ChatbotDetails";
 import ChatbotDelete from "../../components/ChatbotDelete/ChatbotDelete";
 
+import {ClipboardCopy} from '@patternfly/react-core';
+
+
 const ListChatbotPage = () => {
     const [chatbotData, setChatbotData] = useState([]);
     const [chatbots, setChatbots] = useState([]);
@@ -98,6 +101,9 @@ const ListChatbotPage = () => {
     return (
         <>
         <main>
+
+{/* <ClipboardCopy hoverTip="Copy" clickTip="Copied" children="">
+</ClipboardCopy>; */}
 
             <div className="container">
                 <div className="row align-items-center">
@@ -196,8 +202,6 @@ const ListChatbotPage = () => {
         <div id="chatbot-modals">
             <ChatbotDetails chatbot={selectedChatbot} handleCloseModal={handleCloseModal} />
             <ChatbotDelete chatbot={selectedChatbot} handleCloseModal={handleCloseModal} onDeleteSuccess={handleDeleteSuccess} />
-            {/* <EditChatbot chatbot={selectedChatbot} handleCloseModal={handleCloseModal} />
-            <DeleteChatbot /> */}
         </div>
         </>
     )

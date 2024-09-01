@@ -24,13 +24,24 @@ def generate_question_answer_pairs(chunks): # Function to process each chunk wit
     responses = []
     for chunk in chunks:
         response = client.chat.completions.create(
-            model="gpt-3.5-turbo-0125",
+            model="gpt-4",
             messages=[
                 {"role": "system", "content": "You are an assistant that generates questions and answers based on the provided content."},
-                {"role": "user", "content": f"Analyze the following content and generate a list of questions and answers in the form of a JSON object with keys 'question' and 'answer': {chunk}"}
+                {"role": "user", "content": f"""Analyze the following content and generate a list of questions and answers in the form of JSON objects. 
+                    The output should be a valid JSON array, formatted like this:
+                    [
+                        {{
+                            "question": "Your question here",
+                            "answer": "The corresponding answer here"
+                        }},
+                        ...
+                    ]
+                    Do not include any additional text, explanations, or comments. Just return the JSON array directly: {chunk}"""
+                }
             ]
         )
-        parsed_response = json.loads(response.choices[0].message.content)
+        # print("response of qa generation", response.choices[0].message.content)
+        parsed_response = json.loads(response.choices[0].message.content.strip())
         responses.append(parsed_response)
     return responses[0]
 

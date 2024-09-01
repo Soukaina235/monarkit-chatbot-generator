@@ -4,20 +4,28 @@ import os
 import json
 from django.conf import settings
 from datetime import datetime
+from ..models import Chatbot
 
 load_dotenv()
 openai_api_key = os.getenv('OPENAI_API_KEY')
 client = OpenAI(api_key=openai_api_key)
 
-def get_augmented_data(data, system_message):
+def get_augmented_data(chatbot_id, data, system_message):
 
     # print(input_jsonl)
 
     # with open(input_jsonl, 'r') as file:
     #     data = file.readlines()
 
-
     augmented_data = []
+
+    try:
+        chatbot = Chatbot.objects.get(id=chatbot_id)
+    except Chatbot.DoesNotExist:
+        return "Chatbot not found"
+    chatbot_name = chatbot.name
+    chatbot_company = chatbot.owner.company_name
+    system_message = f"You are {chatbot_name}, a virtual assistant dedicated to the {chatbot_company} company. The user can ask questions about products, customer support, or any other information related to our company. For topics outside our domain, you will inform the user that you focus solely on {chatbot_company}."
 
     # for line in data:
     #     item = json.loads(line)
@@ -48,7 +56,7 @@ def get_augmented_data(data, system_message):
         response = client.chat.completions.create(
             model="gpt-4",
             messages=[
-                {"role": "system", "content": "You are an assistant that generates reformulated questions based on the provided content."},
+                {"role": "system", "content": system_message},
                 {"role": "user", "content": prompt}
             ]
         )
@@ -86,13 +94,12 @@ def get_file_path(user_id):
     # Define the file path
     filename = f"{timestamp}.jsonl"
     file_path = os.path.join(directory, filename)
-    return {'file_path': file_path, 'filename': filename}
+    return {'full_path': file_path, 'file_name': filename}
 
-def augment_data(dataset, system_message, user_id):
-    augmented_data = get_augmented_data(dataset, system_message)
+def augment_data(chatbot_id, dataset, system_message, user_id):
+    augmented_data = get_augmented_data(chatbot_id, dataset, system_message)
     file_path = get_file_path(user_id)
-    file_info = get_file_path(user_id)
-    full_path = file_info['file_path']
+    full_path = file_path['full_path']
     save_to_jsonl_file(augmented_data, full_path)
-    file_name = file_info['filename']
-    return file_name
+    # file_name = file_info['file_name']
+    return file_path
